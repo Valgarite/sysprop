@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios'
 import Modal from 'react-bootstrap/Modal';
 import dataGet from '../DataFetching';
-import '../assets/styles.scss'
+// import '../assets/styles.scss'
 
 function agregarCliente(ruta, nombre, apellido, cedula, telefono, direccion){
   console.log("1");
@@ -32,7 +32,6 @@ function Dashboard() {
 
   return (
     <div>
-
     {/* <!--CUERPO--> */}
     <div id="cuerpo">
       <div className="m-4 row">

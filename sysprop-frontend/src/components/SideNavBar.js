@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import "./SideNavBar.css";
 
-const Sidebar = () => {
+const SideNavBar = () => {
 	const [isExpanded, setExpendState] = useState(true);
 	const menuItems = [
 		{
@@ -9,7 +10,7 @@ const Sidebar = () => {
 		},
 		{
 			text: "Compras",
-			icon: "../../public/icons/user.svg",
+			icon: "icons/user.svg",
 		},
 		{
 			text: "Ventas",
@@ -100,4 +101,4 @@ const Sidebar = () => {
 	);
 };
 
-export default Sidebar;
+export default SideNavBar;
