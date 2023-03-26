@@ -1,11 +1,56 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 
-const Sidebar = () => {
-  const [isExpanded, setExpendState] = useState(true);
-  return (
-    <div className="nav-upper">
-				<div className="nav-heading">
+
+const SideBar = () => {
+	const [isExpanded, setExpendState] = useState(true);
+	const menuItems = [
+		{
+			text: "Inicio",
+			icon: "bx bx-collection",
+		},
+		{
+			text: "Compras",
+			icon: "bx bx-collection",
+		},
+		{
+			text: "Ventas",
+			icon: "sbx bx-book-alt",
+		},
+		{
+			text: "Clientes",
+			icon: "bx bx-book-alt",
+		},
+		{
+			text: "Proveedores",
+			icon: "bx bx-line-chart",
+		},
+		{
+			text: "Inventario",
+			icon: "bx bx-plug",
+		},
+		{
+			text: "Usuarios",
+			icon: "bx bx-compass",
+		},
+		{
+			text: "Mantenimiento",
+			icon: "bx bx-history",
+		},
+		{
+			text: "Ayuda",
+			icon: "bx bx-history",
+		},
+	];
+	return (
+		<div
+			className={
+				isExpanded
+					? "side-nav-container"
+					: "side-nav-container side-nav-container-NX"
+			}
+		>
+			<div className="nav-upper">
+				<div className= "nav-heading">
 					{isExpanded && (
 						<div className="nav-brand">
 							<img src="icons/Logo.svg" alt="Logo" srcset="" />
@@ -23,99 +68,37 @@ const Sidebar = () => {
 						<span></span>
 					</button>
 				</div>
-
-      <div className="sidebar close">
-        <div className="logo-details">
-          <i className="bx bxl-c-plus-plus"></i>
-          <span className="logo_name">SysProp</span>
-        </div>
-        <ul className="nav-links">
-          <li>
-            <div className="iocn-link">
-              <Link to="/">
-                <i className="bx bx-collection"></i>
-                <span className="link_name">Dasboard</span>
-              </Link>
-              <i className="bx bxs-chevron-down arrow"></i>
-            </div>
-          </li>
-          <li>
-            <div className="iocn-link">
-              <Link to="/">
-                <i className="bx bx-collection"></i>
-                <span className="link_name">Compras</span>
-              </Link>
-              <i className="bx bxs-chevron-down arrow"></i>
-            </div>
-          </li>
-          <li>
-            <div className="iocn-link">
-              <Link to="/">
-                <i className="bx bx-book-alt"></i>
-                <span className="link_name">Ventas</span>
-              </Link>
-              <i className="bx bxs-chevron-down arrow"></i>
-            </div>
-          </li>
-          <li>
-            <div className="iocn-link">
-              <Link to="/clientes">
-                <i className="bx bx-book-alt"></i>
-                <span className="link_name">Clientes</span>
-              </Link>
-              <i className="bx bxs-chevron-down arrow"></i>
-            </div>
-          </li>
-          <li>
-            <Link to="/proveedores">
-              <i className="bx bx-line-chart"></i>
-              <span className="link_name">Proveedores</span>
-            </Link>
-          </li>
-          <li>
-            <div className="iocn-link">
-              <Link to="/">
-                <i className="bx bx-plug"></i>
-                <span className="link_name">Inventario</span>
-              </Link>
-              <i className="bx bxs-chevron-down arrow"></i>
-            </div>
-          </li>
-          <li>
-            <Link to="/">
-              <i className="bx bx-compass"></i>
-              <span className="link_name">Usuarios</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/">
-              <i className="bx bx-history"></i>
-              <span className="link_name">Mantenimiento</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/">
-              <i className="bx bx-history"></i>
-              <span className="link_name">Ayuda</span>
-            </Link>
-          </li>
-
-          <li>
-            <div className="profile-details">
-              <div className="profile-content">
-                {/* <!--<img src="image/profile.jpg" alt="profileImg">--> */}
-              </div>
-              <div className="name-job">
-                <div className="profile_name">Usuario</div>
-                <div className="job">Administrador</div>
-              </div>
-              <i className="bx bx-log-out"></i>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  );
+				<div className="nav-menu">
+					{menuItems.map(({ text, icon }) => (
+						<a
+							className={isExpanded ? "menu-item" : "menu-item menu-item-NX"}
+							href="/"
+						>
+							<i className={icon}/>
+							{isExpanded && <p> {text}</p>}
+						</a>
+					))}
+				</div>
+			</div>
+			<div className="nav-footer">
+				{isExpanded && (
+					<div className="nav-details">
+						<img
+							className="nav-footer-avatar"
+							src="icons/admin-avatar.svg"
+							alt="Usuario"
+							srcset=""
+						/>
+						<div className="nav-footer-info">
+							<p className="nav-footer-user-name">Julio Pacheco</p>
+							<p className="nav-footer-user-position">Administrador</p>
+						</div>
+					</div>
+				)}
+				<img className="logout-icon" src="icons/logout.svg" alt="" srcset="" />
+			</div>
+		</div>
+	);
 };
 
-export default Sidebar;
+export default SideBar;
