@@ -29,6 +29,30 @@ function Dashboard() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const camposDataClientes = [
+    {
+      column: "ID",
+    },
+    {
+      column: "Nombre",
+    },
+    {
+      column: "Apellido",
+    },
+    {
+      column: "Cédula",
+    },
+    {
+      column: "Teléfono"
+    },
+    {
+      column: "Dirección",
+    },
+    {
+      column: "Acciones",
+    }
+  ]
+
   return (
     <div>
 
@@ -61,13 +85,9 @@ function Dashboard() {
         <table id="tabla-clientes" className="table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Cédula</th>
-              <th>Teléfono</th>
-              <th>Dirección</th>
-              <th>Acciones</th>
+              {camposDataClientes.map(({column}) => (
+                <th>{column}</th>
+              ))}
             </tr>
           </thead>
           <tbody>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { Link } from "react-router-dom";
 
 const SideBar = () => {
 	const [isExpanded, setExpendState] = useState(true);
@@ -7,38 +7,47 @@ const SideBar = () => {
 		{
 			text: "Inicio",
 			icon: "bx bx-collection",
+			path: "/dashboard",
 		},
 		{
 			text: "Compras",
 			icon: "bx bx-collection",
+			path: "/Compras",
 		},
 		{
 			text: "Ventas",
 			icon: "sbx bx-book-alt",
+			path: "/ventas",
 		},
 		{
 			text: "Clientes",
 			icon: "bx bx-book-alt",
+			path: "/clientes",
 		},
 		{
 			text: "Proveedores",
 			icon: "bx bx-line-chart",
+			path: "/proveedores",
 		},
 		{
 			text: "Inventario",
 			icon: "bx bx-plug",
+			path: "/inventario",
 		},
 		{
 			text: "Usuarios",
 			icon: "bx bx-compass",
+			path: "/usuarios",
 		},
 		{
 			text: "Mantenimiento",
 			icon: "bx bx-history",
+			path: "/mantenimiento",
 		},
 		{
 			text: "Ayuda",
 			icon: "bx bx-history",
+			path: "/ayuda",
 		},
 	];
 	return (
@@ -54,7 +63,7 @@ const SideBar = () => {
 					{isExpanded && (
 						<div className="nav-brand">
 							<img src="icons/Logo.svg" alt="Logo" srcset="" />
-							<h2>SysProp Gelato</h2>
+							<h2 className="nav-brand-title">SysProp Gelato</h2>
 						</div>
 					)}
 					<button
@@ -69,14 +78,14 @@ const SideBar = () => {
 					</button>
 				</div>
 				<div className="nav-menu">
-					{menuItems.map(({ text, icon }) => (
-						<a
+					{menuItems.map(({ text, icon, path }) => (
+						<Link
 							className={isExpanded ? "menu-item" : "menu-item menu-item-NX"}
-							href="/"
+							to={path}
 						>
 							<i className={icon}/>
 							{isExpanded && <p> {text}</p>}
-						</a>
+						</Link>
 					))}
 				</div>
 			</div>
@@ -95,7 +104,9 @@ const SideBar = () => {
 						</div>
 					</div>
 				)}
-				<img className="logout-icon" src="icons/logout.svg" alt="" srcset="" />
+				<Link to = "/" className="logout-link">
+					<img className="logout-icon" src="icons/logout.svg" alt="" srcset="" />
+				</Link>
 			</div>
 		</div>
 	);
