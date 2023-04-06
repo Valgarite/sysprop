@@ -1,5 +1,5 @@
 export class CreateClienteDto{
-    id: Number;
+    id: number;
     nombre: string;
     apellido: string;
     cedula: string;
