@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Cargo } from './cargo.entity';
+import { Venta } from './venta.entity';
 
 @Entity()
 export class Usuario{
@@ -23,6 +24,9 @@ export class Usuario{
 
     @Column()
     password: string;
+
+    @OneToMany(()=>Venta, venta=>venta.id)
+    venta: Venta[]
 
     @ManyToOne(()=>Cargo, cargo=>cargo.nombre)
     cargo: Cargo;

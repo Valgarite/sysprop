@@ -1,5 +1,5 @@
 export class RelacionarVenta {
-    articuloid: any;
-    ventaid: any;
+    articuloid: number;
+    ventaid: number;
     cantidad: number;
 }

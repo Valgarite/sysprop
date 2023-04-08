@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Put, Param, Delete  } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe  } from '@nestjs/common';
 import { CreateVentaDto } from './dto/create-venta.dto/create-venta.dto';
 import { VentasService } from './ventas.service';
 import { UpdateVentaDto } from './dto/update-venta.dto/update-venta.dto';
 import { RelacionarVenta } from './dto/create-venta.dto/descontar.dto';
+import { union_Venta_Articulos } from 'src/entities/union_articulo_venta.entity';
 
 @Controller('ventas')
 export class VentasController {
@@ -14,7 +15,7 @@ export class VentasController {
     }
 
     @Get(':id')
-    getVenta(@Param('id') id: number){
+    getVenta(@Param('id', ParseIntPipe) id: number){
         return this.ventasService.getVentaById(id);
     }
 
@@ -24,13 +25,18 @@ export class VentasController {
     }
 
     @Put(':id')
-    update(@Param('id') id: number, @Body() updateVenta: UpdateVentaDto) {
+    update(@Param('id', ParseIntPipe) id: number, @Body() updateVenta: UpdateVentaDto) {
         return this.ventasService.updateVenta(id, updateVenta);
     }
 
     @Delete(':id')
-    delete(@Param('id') id: number) {
+    delete(@Param('id', ParseIntPipe) id: number) {
         return this.ventasService.deleteVenta(id);
+    }
+
+    @Post('/union')
+    crearUnion(@Body() descontar: RelacionarVenta){
+        return this.ventasService.restarInventario(descontar);
     }
 
 

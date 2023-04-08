@@ -1,6 +1,6 @@
-export class CreateClienteDto{
+export class CreateProveedorDto{
     nombre: string;
-    cedula: string;
+    rif: string;
     telefono: string;
     direccion: string;
 }

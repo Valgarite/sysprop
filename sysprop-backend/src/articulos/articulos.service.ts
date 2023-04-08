@@ -6,6 +6,8 @@ import { CreateArticuloDto } from './dto/create-articulo.dto';
 import { UpdateArticuloDto } from './dto/update-articulo.dto';
 import { CategoriaDto } from './dto/categoria.dto';
 import { Categoria } from 'src/entities/categoria.entity';
+import { union_Compra_Articulos } from 'src/entities/union_articulo_compra.entity';
+import { union_Venta_Articulos } from 'src/entities/union_articulo_venta.entity';
 
 @Injectable()
 export class ArticulosService {
@@ -13,7 +15,10 @@ export class ArticulosService {
         @InjectRepository(Articulo)
         private articulosRepository: Repository<Articulo>,
         @InjectRepository(Categoria)
-        private categoriaRepository: Repository<Categoria>
+        private categoriaRepository: Repository<Categoria>,
+
+        @InjectRepository(union_Compra_Articulos)
+        private unionCompraRepository: Repository<union_Compra_Articulos>,
         ) {}
       
         async getAllArticulos(): Promise<Articulo[]> {

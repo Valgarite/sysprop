@@ -21,5 +21,5 @@ export class Compra {
         idproveedor: number; //FK
 
         @OneToMany(type => union_Compra_Articulos, union=>union.compra)
-        union: union_Compra_Articulos[]
+        union: number;
 }

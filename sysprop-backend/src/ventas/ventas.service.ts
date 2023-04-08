@@ -7,6 +7,8 @@ import { UpdateVentaDto } from './dto/update-venta.dto/update-venta.dto';
 import { Usuario } from 'src/entities/usuario.entity';
 import { Cliente } from 'src/entities/clientes.entity';
 import { RelacionarVenta } from './dto/create-venta.dto/descontar.dto';
+import { union_Venta_Articulos } from 'src/entities/union_articulo_venta.entity';
+import { Articulo } from 'src/entities/articulo.entity';
 
 @Injectable()
 export class VentasService {
@@ -16,13 +18,20 @@ export class VentasService {
     private usuariosRepository: Repository<Usuario>,
     @InjectRepository(Cliente)
     private clientesRepository: Repository<Cliente>,
+
+    @InjectRepository(Articulo)
+    private articuloRepository: Repository<Articulo>,
+    @InjectRepository(union_Venta_Articulos)
+    private unionRepository: Repository<union_Venta_Articulos>,
   ) {}
 
   async getAllVentas(): Promise<Venta[]> {
-    return await this.ventasRepository.find();
+    const venta = this.ventasRepository.find({relations: ['idusuario', 'idcliente', 'union.articulo', 'union.venta']})
+    return await venta;
   }
 
   async createVenta(nuevaVenta: CreateVentaDto): Promise<Venta> {
+    
       const venta = new Venta()
       
       venta.fechaCreacion = new Date();
@@ -34,10 +43,13 @@ export class VentasService {
   }
 
   async getVentaById(id: number): Promise<Venta> {
-    return await this.ventasRepository.findOne({
+
+    return await this.ventasRepository.findOne(
+      {
       where: {
         id,
       },
+      relations: ['idusuario', 'idcliente']
     });
   }
 
@@ -49,5 +61,22 @@ export class VentasService {
 
   async deleteVenta(id: number): Promise<void> {
     await this.ventasRepository.delete(id);
+  }
+
+  //Esta función nunca devolvió las tablas como esperaba.
+  //async getAllUnion(): Promise<union_Venta_Articulos[]> {
+  //  const union = await this.unionRepository.find({relations: []})
+  //  return union;
+  //}
+
+  async restarInventario(descontar: RelacionarVenta): Promise<union_Venta_Articulos>{
+
+    const relacionInventarioConVenta = new union_Venta_Articulos();
+
+    relacionInventarioConVenta.cantidad = descontar.cantidad;
+    relacionInventarioConVenta.articulo = descontar.articuloid;
+    relacionInventarioConVenta.venta = descontar.ventaid;
+
+    return await this.unionRepository.save(relacionInventarioConVenta)
   }
 }

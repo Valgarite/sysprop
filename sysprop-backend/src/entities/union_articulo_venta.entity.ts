@@ -7,14 +7,14 @@ import { Venta } from "./venta.entity";
 export class union_Venta_Articulos {
     //EN CONDICIONES NORMALES ESTE ID NO HARÍA FALTA PERO TYPEORM NO PERMITE ENTITIES SIN PRIMARY COLUMN.
     @PrimaryGeneratedColumn()
-    id: any;
+    id: number;
 
     @Column()
     cantidad: number;
 
     @ManyToOne(type => Articulo, articulo => articulo.id)
-    articulo: Articulo;
+    articulo: number;
 
     @ManyToOne(type => Venta, venta => venta.id)
-    venta: Venta;
+    venta: number;
 }

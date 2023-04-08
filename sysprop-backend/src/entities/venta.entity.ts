@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from "./usuario.entity";
 import { Cliente } from "./clientes.entity";
 import { union_Venta_Articulos } from "./union_articulo_venta.entity";
@@ -15,11 +15,14 @@ export class Venta {
         total: number;
 
         @ManyToOne(type => Usuario, usuario => usuario.id)
+        @JoinColumn()
         idusuario: number; //FK
 
         @ManyToOne(type => Cliente, cliente => cliente.id)
+        @JoinColumn()
         idcliente: number; //FK
 
         @OneToMany(type => union_Venta_Articulos, union=>union.venta)
-        union: union_Venta_Articulos[]
+        @JoinColumn()
+        union: number;
 }
