@@ -1,13 +1,13 @@
 import { Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Articulo } from "./articulo.entity";
-import { Venta } from "./venta.entity";
+import { Compra } from "./compra.entity";
 
 //TABLA DE UNIÓN
 @Entity()
-export class union_Venta_Articulos {
+export class union_Compra_Articulos {
     //EN CONDICIONES NORMALES ESTE ID NO HARÍA FALTA PERO TYPEORM NO PERMITE ENTITIES SIN PRIMARY COLUMN.
     @PrimaryGeneratedColumn()
-    id: any;
+    id: number;
 
     @Column()
     cantidad: number;
@@ -15,6 +15,6 @@ export class union_Venta_Articulos {
     @ManyToOne(type => Articulo, articulo => articulo.id)
     articulo: Articulo;
 
-    @ManyToOne(type => Venta, venta => venta.id)
-    venta: Venta;
+    @ManyToOne(type => Compra, compra => compra.id)
+    compra: Compra;
 }

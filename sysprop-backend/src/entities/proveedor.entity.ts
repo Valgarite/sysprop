@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Venta } from "./venta.entity";
 
 @Entity()
-export class Cliente {
+export class Proveedor {
         @PrimaryGeneratedColumn()
         id: number;
 
@@ -10,7 +10,7 @@ export class Cliente {
         nombre: string;
 
         @Column()
-        cedula: string;
+        rif: string;
 
         @Column()
         telefono: string;
@@ -18,7 +18,9 @@ export class Cliente {
         @Column()
         direccion: string;
 
-        @OneToMany(type => Venta, venta => venta.id)
-        venta: Venta[]
+        @Column()
+        correo: string;
 
+        @OneToMany(type => Compra, compra => compra.id)
+        compra: Compra[]
 }

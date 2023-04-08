@@ -4,15 +4,18 @@ import { Repository } from 'typeorm';
 import { Venta } from '../entities/venta.entity';
 import { CreateVentaDto } from './dto/create-venta.dto/create-venta.dto';
 import { UpdateVentaDto } from './dto/update-venta.dto/update-venta.dto';
+import { Usuario } from 'src/entities/usuario.entity';
+import { Cliente } from 'src/entities/clientes.entity';
+import { RelacionarVenta } from './dto/create-venta.dto/descontar.dto';
 
 @Injectable()
 export class VentasService {
   constructor(@InjectRepository(Venta)
-    private ventasRepository: Repository<Venta>
-    //@InjectRepository(Usuario)
-    //private usuariosRepository: Repository<Usuario>,
-    //@InjectRepository(Cliente)
-    //private clientesRepository: Repository<Cliente>,
+    private ventasRepository: Repository<Venta>,
+    @InjectRepository(Usuario)
+    private usuariosRepository: Repository<Usuario>,
+    @InjectRepository(Cliente)
+    private clientesRepository: Repository<Cliente>,
   ) {}
 
   async getAllVentas(): Promise<Venta[]> {
@@ -20,14 +23,13 @@ export class VentasService {
   }
 
   async createVenta(nuevaVenta: CreateVentaDto): Promise<Venta> {
-    //const usuario = await this.usuariosRepository.findOne(nuevaVenta.idusuario);
-    //const cliente = await this.clientesRepository.findOne(nuevaVenta.idcliente);
+      const venta = new Venta()
+      
+      venta.fechaCreacion = new Date();
+      venta.total = nuevaVenta.total;
+      venta.idusuario = nuevaVenta.idusuario;
+      venta.idcliente = nuevaVenta.idcliente;
 
-    const venta = this.ventasRepository.create({
-    //  idusuario: usuario,
-    //  idcliente: cliente,
-      ...nuevaVenta,
-    });
     return await this.ventasRepository.save(venta);
   }
 
@@ -41,6 +43,7 @@ export class VentasService {
 
   async updateVenta(id: number, updateVenta: UpdateVentaDto): Promise<Venta> {
     const venta = await this.getVentaById(id);
+    this.ventasRepository.merge(venta, updateVenta);
     return await this.ventasRepository.save(venta);
   }
 

@@ -1,12 +1,13 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Cargo } from './cargo.entity';
 
 @Entity()
 export class Usuario{
     @PrimaryGeneratedColumn()
-    id: number;
+    id: string;
 
     @Column()
-    cedula: number;
+    cedula: string;
 
     @Column()
     nombre: string;
@@ -23,6 +24,6 @@ export class Usuario{
     @Column()
     password: string;
 
-    @Column()
-    cargo: string; //TO DO:adaptar después a FK hacia tabla de cargos
+    @ManyToOne(()=>Cargo, cargo=>cargo.nombre)
+    cargo: Cargo;
 }

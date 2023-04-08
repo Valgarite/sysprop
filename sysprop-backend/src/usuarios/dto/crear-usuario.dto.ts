@@ -1,4 +1,4 @@
-export class CrearUsuarioDto{
+export class CreateUsuarioDto{
     cedula: string
     nombre: string
     username: string

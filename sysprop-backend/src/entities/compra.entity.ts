@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from "./usuario.entity";
-import { Cliente } from "./clientes.entity";
-import { union_Venta_Articulos } from "./union_articulo_venta.entity";
+import { union_Compra_Articulos } from "./union_articulo_compra.entity";
+import { Proveedor } from "./proveedor.entity";
 
-@Entity({name:'ventas'})
-export class Venta {
+@Entity({name:'compras'})
+export class Compra {
         @PrimaryGeneratedColumn()
         id: number; //PK
 
@@ -17,9 +17,9 @@ export class Venta {
         @ManyToOne(type => Usuario, usuario => usuario.id)
         idusuario: number; //FK
 
-        @ManyToOne(type => Cliente, cliente => cliente.id)
-        idcliente: number; //FK
+        @ManyToOne(type => Proveedor, proveedor => proveedor.id)
+        idproveedor: number; //FK
 
-        @OneToMany(type => union_Venta_Articulos, union=>union.venta)
-        union: union_Venta_Articulos[]
+        @OneToMany(type => union_Compra_Articulos, union=>union.compra)
+        union: union_Compra_Articulos[]
 }
