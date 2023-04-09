@@ -3,7 +3,9 @@ import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/crear-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { CargoDto } from './dto/cargo.dto';
+import { ApiTags } from '@nestjs/swagger/dist';
 
+@ApiTags('Usuarios')
 @Controller('usuarios')
 export class UsuariosController {
 
@@ -20,8 +22,9 @@ export class UsuariosController {
     }
 
     @Post()
-    postUsuario(@Body() newUsuario: CreateUsuarioDto){
-        this.usuariosService.createUsuario(newUsuario);
+    async postUsuario(@Body() newUsuario: CreateUsuarioDto){
+        const cargo = await this.usuariosService.getCargoById(newUsuario.cargo)
+        return this.usuariosService.createUsuario(newUsuario, cargo);
     }
 
     @Put(':id')
@@ -46,7 +49,7 @@ export class UsuariosController {
 
     @Post('/cargos')
     postCargo(@Body() newCargo: CargoDto){
-        this.usuariosService.createCargo(newCargo);
+        return this.usuariosService.createCargo(newCargo);
     }
 
     @Put('/cargos/:id')

@@ -3,7 +3,9 @@ import { ComprasService } from './compras.service';
 import { CreateCompraDto } from './dto/create-compra.dto';
 import { UpdateCompraDto } from './dto/update-compra.dto';
 import { RelacionarCompra } from './dto/incrementar.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Compras')
 @Controller('compras')
 export class ComprasController {
     constructor(private comprasService: ComprasService){}
@@ -35,6 +37,6 @@ export class ComprasController {
 
     @Post('/union')
     crearUnion(@Body() descontar: RelacionarCompra){
-        return this.comprasService.sumarInventario(descontar);
+    //    return this.comprasService.sumarInventario(descontar);
     }
 }

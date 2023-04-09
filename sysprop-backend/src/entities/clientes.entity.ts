@@ -6,16 +6,16 @@ export class Cliente {
         @PrimaryGeneratedColumn()
         id: number;
 
-        @Column()
+        @Column({length: 64})
         nombre: string;
 
-        @Column()
+        @Column({length: 13})
         cedula: string;
 
-        @Column()
+        @Column({length: 20})
         telefono: string;
 
-        @Column()
+        @Column({length: 100})
         direccion: string;
 
         @OneToMany(type => Venta, venta => venta.id)

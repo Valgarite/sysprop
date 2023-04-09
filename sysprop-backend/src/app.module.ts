@@ -8,16 +8,17 @@ import { ArticulosModule } from './articulos/articulos.module';
 import { ClientesModule } from './clientes/clientes.module';
 import { ComprasModule } from './compras/compras.module';
 import { ProveedoresModule } from './proveedor/proveedor.module';
+import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from './config';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username:'root',
-      password: '',
-      database: 'sysprop',
+      host: DB_HOST,
+      port: parseInt(DB_PORT),
+      username:DB_USER,
+      password: DB_PASSWORD,
+      database: DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       autoLoadEntities: true,
       synchronize: true

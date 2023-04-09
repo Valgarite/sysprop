@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Put, Param, Delete, ParseIntPipe } from '@
 import { ProveedoresService } from "./proveedor.service";
 import { CreateProveedorDto } from "./dto/proveedores.dto";
 import { UpdateProveedorDto } from './dto/updateProveedores.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Proveedores')
 @Controller('proveedores')
 export class ProveedoresController {
     constructor(private proveedoresService: ProveedoresService){}

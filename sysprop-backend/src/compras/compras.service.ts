@@ -60,21 +60,33 @@ export class ComprasService {
     await this.comprasRepository.delete(id);
   }
 
-  //Esta función nunca devolvió las tablas como esperaba.
-  //async getAllUnion(): Promise<union_Compra_Articulos[]> {
-  //  const union = await this.unionRepository.find({relations: []})
-  //  return union;
+  //async crearRelacion(){
+  //  const nuevaUnion = this.unionRepository.save (new union_Compra_Articulos)
+  //  console.log ((await nuevaUnion).id)
+  //  return (await nuevaUnion).id
   //}
 
-  async sumarInventario(descontar: RelacionarCompra): Promise<union_Compra_Articulos>{
+  //async sumarInventario(nuevaCompra: CreateCompraDto, incrementar: RelacionarCompra, relacion: union_Compra_Articulos): Promise<union_Compra_Articulos>{
 
-    const relacionInventarioConCompra = new union_Compra_Articulos();
+    //const compraRegistrada = new Compra()
+    //compraRegistrada.fechaCreacion = new Date()
+    //compraRegistrada.idproveedor = nuevaCompra.idproveedor
+    //compraRegistrada.idusuario = nuevaCompra.idusuario
 
-    relacionInventarioConCompra.cantidad = descontar.cantidad;
-    relacionInventarioConCompra.articulo = descontar.articuloid;
-    relacionInventarioConCompra.compra = descontar.compraid;
+    //const compraGuardada = await this.comprasRepository.save(compraRegistrada)
 
-    return await this.unionRepository.save(relacionInventarioConCompra)
-  }
+    //relacion.compra = compraGuardada
+    //console.log(compraGuardada)
+    //console.log(relacion)
+    //relacion.compra = [compraGuardada, ...[relacion.compra]]
+
+    //const relacionInventarioConCompra = new union_Compra_Articulos();
+
+    //relacionInventarioConCompra.cantidad = incrementar.cantidad;
+    //relacionInventarioConCompra.articulo = incrementar.articuloid;
+    //relacionInventarioConCompra.compra = []
+
+    //return //await this.unionRepository.save(relacionInventarioConCompra)
+  //}
 
 }

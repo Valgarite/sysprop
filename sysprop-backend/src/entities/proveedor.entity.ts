@@ -6,19 +6,19 @@ export class Proveedor {
         @PrimaryGeneratedColumn()
         id: number;
 
-        @Column()
+        @Column({length: 80})
         nombre: string;
 
-        @Column()
+        @Column({length: 16})
         rif: string;
 
-        @Column()
+        @Column({length: 20})
         telefono: string;
 
-        @Column()
+        @Column({length: 120})
         direccion: string;
 
-        @Column()
+        @Column({length: 50})
         correo: string;
 
         @OneToMany(type => Compra, compra => compra.id)

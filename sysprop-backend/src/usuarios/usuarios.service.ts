@@ -19,10 +19,11 @@ import { CargoDto } from './dto/cargo.dto';
         ) {}
       
         async getAllUsuarios(): Promise<Usuario[]> {
-          return await this.usuariosRepository.find();
+          return await this.usuariosRepository.find({relations: ["cargo"]});
         }
       
-        async createUsuario(nuevoUsuario: CreateUsuarioDto): Promise<Usuario> {
+        async createUsuario(nuevoUsuario: CreateUsuarioDto, cargo: Cargo): Promise<Usuario> {
+
             const usuario = new Usuario()
             
             usuario.cedula = nuevoUsuario.cedula;
@@ -31,8 +32,12 @@ import { CargoDto } from './dto/cargo.dto';
             usuario.correo = nuevoUsuario.correo;
             usuario.password = nuevoUsuario.password;
             usuario.username = nuevoUsuario.username;
+            const usuarioGuardado = await this.usuariosRepository.save(usuario)
+
+            cargo.usuarios = [usuarioGuardado, ...cargo.usuarios]
+            await cargo.save()
       
-          return await this.usuariosRepository.save(usuario);
+          return usuarioGuardado;
         }
       
         async getUsuarioById(id: string): Promise<Usuario> {
@@ -40,6 +45,7 @@ import { CargoDto } from './dto/cargo.dto';
             where: {
               id,
             },
+            relations: ["cargo"]
           });
         }
       
@@ -59,9 +65,10 @@ import { CargoDto } from './dto/cargo.dto';
 
       async getCargoById(id: number): Promise<Cargo> {
       return await this.cargoRepository.findOne({
-          where: {
+          where: { 
           id,
           },
+          relations: ['usuarios']
       });
       }
 

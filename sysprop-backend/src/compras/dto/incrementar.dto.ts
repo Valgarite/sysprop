@@ -1,5 +1,5 @@
 export class RelacionarCompra {
-    articuloid: any;
-    compraid: any;
+    articuloid: number;
+    compraid: number;
     cantidad: number;
 }

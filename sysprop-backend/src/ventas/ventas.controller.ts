@@ -4,7 +4,9 @@ import { VentasService } from './ventas.service';
 import { UpdateVentaDto } from './dto/update-venta.dto/update-venta.dto';
 import { RelacionarVenta } from './dto/create-venta.dto/descontar.dto';
 import { union_Venta_Articulos } from 'src/entities/union_articulo_venta.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Usuarios')
 @Controller('ventas')
 export class VentasController {
     constructor(private ventasService: VentasService){}

@@ -3,7 +3,10 @@ import { CreateArticuloDto } from './dto/create-articulo.dto';
 import { UpdateArticuloDto } from './dto/update-articulo.dto';
 import { CategoriaDto } from './dto/categoria.dto';
 import { ArticulosService } from './articulos.service';
+import { CreateCompraDto } from 'src/compras/dto/create-compra.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Articulos')
 @Controller('articulos')
 export class ArticulosController {
     constructor(private articulosService: ArticulosService){}
@@ -20,8 +23,15 @@ export class ArticulosController {
     }
 
     @Post()
-    postArticulo(@Body() newArticulo: CreateArticuloDto){
-        this.articulosService.createArticulo(newArticulo);
+    async postArticulo(@Body() newArticulo: CreateArticuloDto){
+        const categoria = await this.articulosService.getCategoriaById(newArticulo.categoria)
+        return this.articulosService.createArticulo(newArticulo, categoria);
+    }
+
+    //a
+    @Post('listacompra')
+    async postListaCompra(@Body() nuevaCompra: CreateCompraDto){
+
     }
 
     @Put(':id')

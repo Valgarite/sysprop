@@ -11,7 +11,7 @@ export class Venta {
         @Column({type: 'datetime', default: () => 'CURRENT_TIMESTAMP'})
         fechaCreacion: Date;
 
-        @Column()
+        @Column({type: 'decimal', precision: 8, scale:2})
         total: number;
 
         @ManyToOne(type => Usuario, usuario => usuario.id)
