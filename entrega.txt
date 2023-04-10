@@ -1,0 +1,6 @@
+Traer impreso la portada de cada manual.
+
+Entrega en disco o pendrive que contenga:
+-Manual de usuario.
+-Manual de analista/sistema.
+-Carpeta con el proyecto (en caso de ser desarrollado en ambiente web colocar el enlace).
