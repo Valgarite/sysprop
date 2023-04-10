@@ -5,11 +5,10 @@ import Modal from 'react-bootstrap/Modal';
 import dataGet from '../DataFetching';
 import '../assets/styles.scss'
 
-function agregarCliente(ruta, nombre, apellido, cedula, telefono, direccion){
-  console.log("1");
+function agregarCliente(ruta, nombre, cedula, telefono, direccion){
+  console.log("posteando");
   axios.post(ruta, {
     "nombre": nombre,
-    "apellido": apellido, 
     "cedula": cedula,
     "telefono": telefono, 
     "direccion": direccion
@@ -24,7 +23,7 @@ function editarCliente(){
 }
 
 function Dashboard() {
-  const itemCliente = dataGet("/clientes")
+  const itemCliente = dataGet("http://localhost:3000/clientes")
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -152,7 +151,7 @@ function Dashboard() {
             >
               Cerrar
             </button>
-            <button type="button" onClick= {agregarCliente("/clientes")} className="btn btn-primary">
+            <button type="button" onClick= {agregarCliente("http://localhost:3000/clientes", "la voy a tocar a pie", "esta es mi gaitaaa", "cuando suena bien", "suena tan tan tan tan tantantan buenaa")} className="btn btn-primary">
               Guardar cambios
             </button>
         </Modal.Footer>
