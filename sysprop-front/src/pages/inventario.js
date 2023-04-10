@@ -1,29 +1,28 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import axios from 'axios'
 import Modal from 'react-bootstrap/Modal';
 import dataGet from '../DataFetching';
 import '../assets/styles.scss'
 
-function agregarCliente(ruta, nombre, cedula, telefono, direccion){
-  console.log("posteando");
+function agregarArticulo(ruta, nombre, cantidad, precio, categoria){
+  console.log("1");
   axios.post(ruta, {
     "nombre": nombre,
-    "cedula": cedula,
-    "telefono": telefono, 
-    "direccion": direccion
+    "cantidad": cantidad, 
+    "precio": precio,
+    "categoria": categoria
   }).then(res=>console.log('posting data', res)).catch(err=>console.log(err))
 }
 
-function eliminarCliente(){
+function eliminarArticulo(){
 
 }
-function editarCliente(){
+function editarArticulo(){
 
 }
 
-function Dashboard() {
-  const itemCliente = dataGet("http://sysprop-production.up.railway.app/clientes")
+function Inventario() {
+  const itemArticulo = dataGet("/articulos")
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -35,12 +34,12 @@ function Dashboard() {
     {/* <!--CUERPO--> */}
     <div id="cuerpo">
       <div className="m-4 row">
-        <h3>Buscar Cliente</h3>
+        <h3>Inventario</h3>
         <div className="col-6">
           <input
             type="text"
             className="form-control"
-            placeholder="Buscar cliente..."
+            placeholder="Buscar Producto..."
           />
         </div>
         <div className="col-3"></div>
@@ -52,36 +51,33 @@ function Dashboard() {
           data-bs-target="#mi-modal"
           onClick={handleShow}
         >
-          Agregar Cliente
+          Agregar Articulo
         </button>
       </div>
 
       <div className="row m-4">
-        <h3 className="mb-3">Clientes Registrados</h3>
-        <table id="tabla-clientes" className="table">
+        <h3 className="mb-3">Articulos</h3>
+        <table id="tabla-inventario" className="table">
           <thead>
             <tr>
               <th>ID</th>
               <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Cédula</th>
-              <th>Teléfono</th>
-              <th>Dirección</th>
-              <th>Acciones</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Categoría</th>
             </tr>
           </thead>
           <tbody>
-          {itemCliente.map((itemCliente, id) => (
+          {itemArticulo.map((itemArticulo, id) => (
             <tr key={id}>
-              <td>{itemCliente.id}</td>
-              <td>{itemCliente.nombre}</td>
-              <td>{itemCliente.apellido}</td>
-              <td>{itemCliente.cedula}</td>
-              <td>{itemCliente.telefono}</td>
-              <td>{itemCliente.direccion}</td>
+              <td>{itemArticulo.id}</td>
+              <td>{itemArticulo.nombre}</td>
+              <td>{itemArticulo.cantidad}</td>
+              <td>{itemArticulo.precio}</td>
+              <td>{itemArticulo.categoria}</td>
               <td>
-                <button className="btn btn-danger" onClick={eliminarCliente(itemCliente.id)}>Eliminar</button>
-                <button className="btn btn-warning" onClick={editarCliente(itemCliente.id)}>Editar</button>
+                <button className="btn btn-danger" onClick={eliminarArticulo(itemArticulo.id)}>Eliminar</button>
+                <button className="btn btn-warning" onClick={editarArticulo(itemArticulo.id)}>Editar</button>
               </td>
             </tr>
                 ))}
@@ -106,7 +102,7 @@ function Dashboard() {
                   />
                 </div>
                 <div className="col-md-6">
-                  <label for="apellido" className="form-label">Apellido:</label>
+                  <label for="cantidad" className="form-label">Cantidad:</label>
                   <input
                     type="text"
                     className="form-control"
@@ -115,30 +111,22 @@ function Dashboard() {
                   />
                 </div>
                 <div className="col-md-6">
-                  <label for="cedula" className="form-label">Cédula:</label>
+                  <label for="precio" className="form-label">Precio:</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="cedula"
+                    id="precio"
                     required
                   />
                 </div>
                 <div className="col-md-6">
-                  <label for="telefono" className="form-label">Teléfono:</label>
+                  <label for="categoria" className="form-label">Categoria:</label>
                   <input
                     type="text"
                     className="form-control"
-                    id="telefono"
+                    id="categoria"
                     required
                   />
-                </div>
-                <div className="col-md-12">
-                  <label for="direccion" className="form-label">Dirección:</label>
-                  <textarea
-                    className="form-control"
-                    id="direccion"
-                    required
-                  ></textarea>
                 </div>
               </div>
               {/* <!--<button type="submit" className="btn btn-primary mt-3">Agregar</button>--> */}
@@ -151,7 +139,7 @@ function Dashboard() {
             >
               Cerrar
             </button>
-            <button type="button" onClick= {agregarCliente("http://sysprop-production.up.railway.app/clientes", "probando", "al hosteado", "pls vaciar la", "base du datos")} className="btn btn-primary">
+            <button type="button" onClick= {agregarArticulo("/articulo")} className="btn btn-primary">
               Guardar cambios
             </button>
         </Modal.Footer>
@@ -160,4 +148,4 @@ function Dashboard() {
   )
 }
 
-export default Dashboard
+export default Inventario

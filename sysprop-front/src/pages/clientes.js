@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import axios from 'axios'
 import Modal from 'react-bootstrap/Modal';
 import dataGet from '../DataFetching';
 import '../assets/styles.scss'
 
-function agregarCliente(ruta, nombre, cedula, telefono, direccion){
-  console.log("posteando");
+function agregarCliente(ruta, nombre, apellido, cedula, telefono, direccion){
+  console.log("1");
   axios.post(ruta, {
     "nombre": nombre,
+    "apellido": apellido, 
     "cedula": cedula,
     "telefono": telefono, 
     "direccion": direccion
@@ -23,18 +23,42 @@ function editarCliente(){
 }
 
 function Dashboard() {
-  const itemCliente = dataGet("http://sysprop-production.up.railway.app/clientes")
+  const itemCliente = dataGet("/clientes")
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const camposDataClientes = [
+    {
+      column: "ID",
+    },
+    {
+      column: "Nombre",
+    },
+    {
+      column: "Apellido",
+    },
+    {
+      column: "Cédula",
+    },
+    {
+      column: "Teléfono"
+    },
+    {
+      column: "Dirección",
+    },
+    {
+      column: "Acciones",
+    }
+  ]
 
   return (
     <div>
 
     {/* <!--CUERPO--> */}
     <div id="cuerpo">
-      <div className="m-4 row">
+      <div className="row p-4">
         <h3>Buscar Cliente</h3>
         <div className="col-6">
           <input
@@ -61,13 +85,9 @@ function Dashboard() {
         <table id="tabla-clientes" className="table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Cédula</th>
-              <th>Teléfono</th>
-              <th>Dirección</th>
-              <th>Acciones</th>
+              {camposDataClientes.map(({column}) => (
+                <th>{column}</th>
+              ))}
             </tr>
           </thead>
           <tbody>
@@ -151,7 +171,7 @@ function Dashboard() {
             >
               Cerrar
             </button>
-            <button type="button" onClick= {agregarCliente("http://sysprop-production.up.railway.app/clientes", "probando", "al hosteado", "pls vaciar la", "base du datos")} className="btn btn-primary">
+            <button type="button" onClick= {agregarCliente("/clientes")} className="btn btn-primary">
               Guardar cambios
             </button>
         </Modal.Footer>

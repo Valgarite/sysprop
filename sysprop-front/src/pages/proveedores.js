@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import axios from 'axios'
 import Modal from 'react-bootstrap/Modal';
 import dataGet from '../DataFetching';
 import '../assets/styles.scss'
 
-function agregarCliente(ruta, nombre, cedula, telefono, direccion){
-  console.log("posteando");
+function agregarCliente(ruta, nombre, apellido, cedula, telefono, direccion){
+  console.log("1");
   axios.post(ruta, {
     "nombre": nombre,
+    "apellido": apellido, 
     "cedula": cedula,
     "telefono": telefono, 
     "direccion": direccion
@@ -23,7 +23,7 @@ function editarCliente(){
 }
 
 function Dashboard() {
-  const itemCliente = dataGet("http://sysprop-production.up.railway.app/clientes")
+  const itemCliente = dataGet("/clientes")
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -35,12 +35,12 @@ function Dashboard() {
     {/* <!--CUERPO--> */}
     <div id="cuerpo">
       <div className="m-4 row">
-        <h3>Buscar Cliente</h3>
+        <h3>Buscar Proveedor</h3>
         <div className="col-6">
           <input
             type="text"
             className="form-control"
-            placeholder="Buscar cliente..."
+            placeholder="Buscar Proveedor..."
           />
         </div>
         <div className="col-3"></div>
@@ -52,7 +52,7 @@ function Dashboard() {
           data-bs-target="#mi-modal"
           onClick={handleShow}
         >
-          Agregar Cliente
+          Agregar Proveedor
         </button>
       </div>
 
@@ -151,7 +151,7 @@ function Dashboard() {
             >
               Cerrar
             </button>
-            <button type="button" onClick= {agregarCliente("http://sysprop-production.up.railway.app/clientes", "probando", "al hosteado", "pls vaciar la", "base du datos")} className="btn btn-primary">
+            <button type="button" onClick= {agregarCliente("/clientes")} className="btn btn-primary">
               Guardar cambios
             </button>
         </Modal.Footer>
