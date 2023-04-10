@@ -21,7 +21,8 @@ import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from './config';
       database: DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       autoLoadEntities: true,
-      synchronize: true
+      synchronize: true,
+      timezone: "-04:00"
     }),
     UsuariosModule,
     ArticulosModule,
