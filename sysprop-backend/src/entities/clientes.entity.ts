@@ -9,12 +9,14 @@ export class Cliente {
         @Column({length: 64})
         nombre: string;
 
-        @Column({length: 13})
+        //CAMBIADO DE 13 A 15 PORQUE LOS PASAPORTES CONSTAN DE ENTRE 6 A 15 CARACTERES ALFANUMÉRICOS.
+        @Column({length: 15})
         cedula: string;
 
         @Column({length: 20})
         telefono: string;
 
+        //esta longitud es distinta a la de proveedor.direccion
         @Column({length: 100})
         direccion: string;
 
