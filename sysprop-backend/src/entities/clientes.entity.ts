@@ -20,6 +20,9 @@ export class Cliente {
         @Column({length: 100})
         direccion: string;
 
+        @Column({default: ()=> 'TRUE'})
+        estado_activo: boolean;
+
         @OneToMany(type => Venta, venta => venta.id)
         venta: Venta[]
 

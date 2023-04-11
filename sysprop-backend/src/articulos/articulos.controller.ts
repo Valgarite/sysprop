@@ -25,13 +25,30 @@ export class ArticulosController {
     @Post()
     async postArticulo(@Body() newArticulo: CreateArticuloDto){
         const categoria = await this.articulosService.getCategoriaById(newArticulo.categoria)
-        return this.articulosService.createArticulo(newArticulo, categoria);
+        if (categoria){
+            const articuloEncontrado = await this.articulosService.buscarArticulo(newArticulo.nombre)
+
+            if (articuloEncontrado){
+                return await this.articulosService.sumarArticulo(articuloEncontrado.id, articuloEncontrado.cantidad, newArticulo.cantidad)
+            } else {
+                return await this.articulosService.createArticulo(newArticulo, categoria)
+            }
+
+        } else {
+            return {"respuesta": "No se encontró la categoría."}
+        }
     }
 
-    //a
-    @Post('listacompra')
-    async postListaCompra(@Body() nuevaCompra: CreateCompraDto){
+    //suma
+    @Post('/lista')
+    async postListaCompra(@Body() sumarCantidad: CreateArticuloDto){
+        const agregado = sumarCantidad.cantidad
+        const articuloEncontrado = this.articulosService.getArticuloByNombre(sumarCantidad.nombre)
 
+        const idArticulo = (await articuloEncontrado).id
+        const cantidadArticulo = (await articuloEncontrado).cantidad
+        
+        return await this.articulosService.sumarArticulo(idArticulo, cantidadArticulo, agregado);
     }
 
     @Put(':id')
@@ -41,10 +58,10 @@ export class ArticulosController {
 
     @Delete(':id')
     deleteArticulo(@Param('id', ParseIntPipe) id: number) {
-        return this.articulosService.deleteArticulo(id);
+        return this.articulosService.desactivarArticulo(id);
     }
 
-    @Get('/categorias/lista')
+    @Get('/categorias')
     getCategorias(){
         return this.articulosService.getAllCategorias();
     }

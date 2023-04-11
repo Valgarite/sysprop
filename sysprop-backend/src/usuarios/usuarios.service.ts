@@ -54,6 +54,12 @@ import { CargoDto } from './dto/cargo.dto';
           this.usuariosRepository.merge(usuario, updateUsuario);
           return await this.usuariosRepository.save(usuario);
         }
+
+        async desactivarUsuario(id: any): Promise<void> {
+          const usuario = await this.getUsuarioById(id);
+          usuario.estado_activo = false
+          await this.usuariosRepository.save(usuario);
+        }
       
         async deleteUsuario(id: any): Promise<void> {
           await this.usuariosRepository.delete(id);

@@ -21,6 +21,9 @@ export class Articulo extends BaseEntity{
     @ManyToOne(() => Categoria, categoria => categoria.nombre)
     categoria: Categoria;
 
+    @Column({default: ()=> 'TRUE'})
+    estado_activo: boolean;
+
     @OneToMany(type => union_Venta_Articulos, unionVenta => unionVenta.articulo)
     unionVenta: union_Venta_Articulos[]
 

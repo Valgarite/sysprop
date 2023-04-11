@@ -25,6 +25,9 @@ export class Usuario extends BaseEntity{
     @Column({length: 25})
     password: string;
 
+    @Column({default: ()=> 'TRUE'})
+    estado_activo: boolean;
+
     @OneToMany(()=>Venta, venta=>venta.id)
     venta: Venta[]
 

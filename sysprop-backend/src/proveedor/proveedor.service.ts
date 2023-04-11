@@ -41,6 +41,12 @@ export class ProveedoresService {
           return await this.proveedoresRepository.save(proveedor);
         }
       
+        async desactivarProveedor(id: any): Promise<void> {
+          const proveedor = await this.getProveedorById(id);
+          proveedor.estado_activo = false
+          await this.proveedoresRepository.save(proveedor);
+        }
+
         async deleteProveedor(id: any): Promise<void> {
           await this.proveedoresRepository.delete(id);
         }

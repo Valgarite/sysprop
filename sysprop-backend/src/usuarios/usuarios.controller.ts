@@ -34,7 +34,7 @@ export class UsuariosController {
 
     @Delete(':id')
     delete(@Param('id') id: any) {
-        return this.usuariosService.deleteUsuario(id);
+        return this.usuariosService.desactivarUsuario(id);
     }
 
     @Get('/cargos/lista')

@@ -47,11 +47,40 @@ export class ArticulosService {
             relations:['categoria']
           });
         }
+
+        async getArticuloByNombre(nombre: string): Promise<Articulo>{
+          const articuloEncontrado = await this.articulosRepository.findOne({
+            where: {
+              nombre,
+            },
+          })
+          return articuloEncontrado
+        }
+
+        async buscarArticulo(dto): Promise<Articulo>{
+          return await this.articulosRepository.findOneBy({'nombre': dto.nombre})
+        }
+
+        async sumarArticulo(idArt: number, cantArt: number, sumatoria: number){
+          const resultado = cantArt + sumatoria
+
+          const mensaje = {
+            "cantidad": resultado
+          }
+
+          return await this.updateArticulo(idArt, mensaje)
+        }
       
         async updateArticulo(id: number, updateArticulo: UpdateArticuloDto): Promise<Articulo> {
           const articulo = await this.getArticuloById(id);
           this.articulosRepository.merge(articulo, updateArticulo);
           return await this.articulosRepository.save(articulo);
+        }
+
+        async desactivarArticulo(id: any): Promise<void> {
+          const articulo = await this.getArticuloById(id);
+          articulo.estado_activo = false
+          await this.articulosRepository.save(articulo);
         }
       
         async deleteArticulo(id: any): Promise<void> {

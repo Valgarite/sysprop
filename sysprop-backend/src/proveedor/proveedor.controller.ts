@@ -31,7 +31,7 @@ export class ProveedoresController {
 
     @Delete(':id')
     deleteProveedor(@Param('id', ParseIntPipe) id: number) {
-        return this.proveedoresService.deleteProveedor(id);
+        return this.proveedoresService.desactivarProveedor(id);
     }
 
 }

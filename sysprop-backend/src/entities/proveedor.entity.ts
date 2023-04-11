@@ -21,6 +21,9 @@ export class Proveedor {
         @Column({length: 50})
         correo: string;
 
+        @Column({default: ()=> 'TRUE'})
+        estado_activo: boolean;
+
         @OneToMany(type => Compra, compra => compra.id)
         compra: Compra[]
 }

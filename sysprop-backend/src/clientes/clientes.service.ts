@@ -40,6 +40,12 @@ export class ClientesService {
           this.clientesRepository.merge(cliente, updateCliente);
           return await this.clientesRepository.save(cliente);
         }
+
+        async desactivarCliente(id: any): Promise<void> {
+          const cliente = await this.getClienteById(id);
+          cliente.estado_activo = false
+          await this.clientesRepository.save(cliente);
+        }
       
         async deleteCliente(id: any): Promise<void> {
           await this.clientesRepository.delete(id);
