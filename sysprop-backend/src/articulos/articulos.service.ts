@@ -70,6 +70,43 @@ export class ArticulosService {
 
           return await this.updateArticulo(idArt, mensaje)
         }
+        async venderArticulo(articulosVendidos){
+          
+          let articulosEncontrados: Promise<Articulo>[] = []
+          let listaArticulos: Articulo[] = []
+  
+          //Realizar un bucle dentro del cual se busque y modifique en el
+          //repositorio cada artículo especificado en el array.
+          
+          await articulosVendidos.forEach((cadaArticulo)=>{
+                  const articuloEncontrado = this.buscarArticulo(cadaArticulo)
+                  articulosEncontrados.push(articuloEncontrado)
+          }
+          )
+
+          let noExistentes: string[]=[]
+  
+          await Promise.all(articulosEncontrados).then((resultados)=>{
+              let i = 0
+              resultados.forEach((articulo)=>{
+                if(articulo){
+                  listaArticulos.push(articulo)
+                } else {
+                  //colocar otro if anidado en el que se validen las cantidades en
+                  //existencia antes de proceder con la compra
+                  noExistentes.push((articulosVendidos[i]))
+                }
+                i++
+              })
+          })
+          const resultados: any[]=[]
+
+          resultados.push(listaArticulos)
+          resultados.push(noExistentes)
+          
+          return resultados
+          //const articuloEncontrado = await this.articulosService.buscarArticulo(articuloVendido.nombre)
+      }
       
         async updateArticulo(id: number, updateArticulo: UpdateArticuloDto): Promise<Articulo> {
           const articulo = await this.getArticuloById(id);

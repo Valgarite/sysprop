@@ -5,6 +5,8 @@ import { CategoriaDto } from './dto/categoria.dto';
 import { ArticulosService } from './articulos.service';
 import { CreateCompraDto } from 'src/compras/dto/create-compra.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { CreateUsuarioDto } from 'src/usuarios/dto/crear-usuario.dto';
+import { Articulo } from 'src/entities/articulo.entity';
 
 @ApiTags('Articulos')
 @Controller('articulos')
@@ -22,7 +24,7 @@ export class ArticulosController {
         return this.articulosService.getArticuloById(id);
     }
 
-    @Post()
+    @Post('/comprar')
     async postArticulo(@Body() newArticulo: CreateArticuloDto){
         const categoria = await this.articulosService.getCategoriaById(newArticulo.categoria)
         if (categoria){
@@ -37,6 +39,11 @@ export class ArticulosController {
         } else {
             return {"respuesta": "No se encontró la categoría."}
         }
+    }
+
+    @Post('/vender')
+    async descontarArticulo(@Body() articulosVendidos: CreateArticuloDto[]){
+        return this.articulosService.venderArticulo(articulosVendidos)
     }
 
     //suma
