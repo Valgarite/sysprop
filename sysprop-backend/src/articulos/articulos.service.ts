@@ -63,33 +63,41 @@ export class ArticulosService {
 
         async sumarArticulo(idArt: number, cantArt: number, sumatoria: number){
           const resultado = cantArt + sumatoria
-
           const mensaje = {
             "cantidad": resultado
           }
 
           return await this.updateArticulo(idArt, mensaje)
         }
+
+        async restarArticulo(idArt: number, cantArt: number, sumatoria: number){
+          const resultado = cantArt - sumatoria
+          const mensaje = {
+            "cantidad": resultado
+          }
+
+          return await this.updateArticulo(idArt, mensaje)
+        }
+
         async venderArticulo(articulosVendidos){
           
           let articulosEncontrados: Promise<Articulo>[] = []
           let listaArticulos: Articulo[] = []
-  
+          let noExistentes: string[]=[]
+          const resultados: any[]=[]
           //Realizar un bucle dentro del cual se busque y modifique en el
           //repositorio cada artículo especificado en el array.
-          
           await articulosVendidos.forEach((cadaArticulo)=>{
                   const articuloEncontrado = this.buscarArticulo(cadaArticulo)
                   articulosEncontrados.push(articuloEncontrado)
-          }
-          )
-
-          let noExistentes: string[]=[]
-  
+          })
+          
           await Promise.all(articulosEncontrados).then((resultados)=>{
               let i = 0
+              console.log("resultados", resultados)
               resultados.forEach((articulo)=>{
                 if(articulo){
+                  //if(articulo.cantidad > )
                   listaArticulos.push(articulo)
                 } else {
                   //colocar otro if anidado en el que se validen las cantidades en
@@ -99,11 +107,15 @@ export class ArticulosService {
                 i++
               })
           })
-          const resultados: any[]=[]
 
           resultados.push(listaArticulos)
           resultados.push(noExistentes)
           
+          listaArticulos.forEach((articuloRestar)=>{
+            const cantidadPasada = this.getArticuloById(articuloRestar.id)
+            //CONTINUAR DESCOMENTANDO ACÁ this.restarArticulo(articuloRestar.id,articuloRestar.cantidad, )
+          })
+
           return resultados
           //const articuloEncontrado = await this.articulosService.buscarArticulo(articuloVendido.nombre)
       }

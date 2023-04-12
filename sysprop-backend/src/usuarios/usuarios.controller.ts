@@ -62,4 +62,9 @@ export class UsuariosController {
         return this.usuariosService.deleteCargo(id);
     }
 
+    @Post('/login/')
+    iniciarSesion(@Body() datosLogin: CreateUsuarioDto){
+        return this.usuariosService.login(datosLogin.username, datosLogin.password);
+    }
+
 }
