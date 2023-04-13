@@ -11,6 +11,10 @@ export class CreateProveedorDto{
 
     @IsString()
     @IsNotEmpty()
+    correo: string;
+    
+    @IsString()
+    @IsNotEmpty()
     telefono: string;
 
     @IsString()
