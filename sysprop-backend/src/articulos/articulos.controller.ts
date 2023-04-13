@@ -20,6 +20,11 @@ export class ArticulosController {
         return this.articulosService.getAllArticulos();
     }
 
+    @Get('/categorias')
+    getCategorias(){
+        return this.articulosService.getAllCategorias();
+    }
+    
     @Get(':id')
     getArticulo(@Param('id', ParseIntPipe) id: number){
         return this.articulosService.getArticuloById(id);
@@ -71,10 +76,7 @@ export class ArticulosController {
         return this.articulosService.desactivarArticulo(id);
     }
 
-    @Get('/categorias')
-    getCategorias(){
-        return this.articulosService.getAllCategorias();
-    }
+
 
     @Get('/categorias/:id')
     getCategoria(@Param('id', ParseIntPipe) id: number){
