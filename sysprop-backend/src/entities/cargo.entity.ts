@@ -8,7 +8,7 @@ export class Cargo extends BaseEntity{
 
     @Column({length: 15})
     nombre: string;
-
+ 
     @OneToMany(()=> Usuario, (usuario)=>usuario.cargo)
-    usuarios: Usuario[]
+    usuarios: Usuario[] 
 }

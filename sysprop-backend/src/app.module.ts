@@ -9,6 +9,7 @@ import { ClientesModule } from './clientes/clientes.module';
 import { ComprasModule } from './compras/compras.module';
 import { ProveedoresModule } from './proveedor/proveedor.module';
 import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from './config';
+import { bootStrapService } from './on-bootstrap.service';
 
 @Module({
   imports: [
@@ -32,6 +33,6 @@ import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from './config';
     ProveedoresModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, bootStrapService],
 })
 export class AppModule {}

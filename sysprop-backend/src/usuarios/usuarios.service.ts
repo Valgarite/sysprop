@@ -41,12 +41,14 @@ export class UsuariosService {
   }
 
   async getUsuarioById(id: string): Promise<Usuario> {
-    return await this.usuariosRepository.findOne({
+    const respuesta = this.usuariosRepository.findOne({
       where: {
         id,
       },
-      relations: ["cargo"]
+      relations: ["cargo"] 
     });
+
+    return await respuesta
   }
 
   async updateUsuario(id: string, updateUsuario: UpdateUsuarioDto): Promise<Usuario> {
@@ -111,4 +113,73 @@ export class UsuariosService {
     this.cargoRepository.merge(cargo, updateCargo);
     return await this.cargoRepository.save(cargo);
   }
+
+  async getCargoByNombre(nombre: string): Promise<Cargo> {
+    return await this.cargoRepository.findOne({
+      where: {
+        nombre,
+      },
+      relations: ['usuarios']
+    });
+  }
+
+  async spawnCargos(): Promise<void>{
+
+    //Crea los cargos durante la primera ejecución del programa.
+    const cargo = ["Empleado", "Administrador", "Gerente"]
+    let cargoSeleccionado: Cargo
+    let convertirDto: CargoDto = {"nombre": ''}
+
+    for (let i=0; i<3; i++){
+      cargoSeleccionado = await this.getCargoByNombre(cargo[i])
+      if(!cargoSeleccionado){
+
+        convertirDto.nombre = cargo[i]
+        console.log(convertirDto)
+        await this.createCargo(convertirDto)
+      }else{
+        console.log("El cargo: ",cargo[i], " ya existía en la BDD")
+      }
+    }
+  }
+
+  async spawnGerente(): Promise<void>{
+    let datosGerente: CreateUsuarioDto={
+      "cedula": "000000",
+      "username": "admin",
+      "password": "zeus",
+      "nombre": "sysprop",
+      "cargo": 3,
+      "correo": "carlsgutierrez259@gmail.com",
+      "fechaNacimiento": new Date(Date.parse("2002-12-26"))
+    }
+
+    const buscarGerente = await this.getUsuarioByUsername(datosGerente.username)
+    if(!buscarGerente){
+      const cargoGerente = await this.getCargoById(datosGerente.cargo)
+      await this.createUsuario(datosGerente, cargoGerente)
+    } else {
+      console.log("Ya había un gerente registrado en esta BDD")
+    }
+
+  }
+
+  async getUsuarioByUsername(username: string): Promise<Usuario | undefined> {
+    return await this.usuariosRepository.findOne({
+      where: {
+        username,
+      },
+      relations: ["cargo"]
+    });
+  }
+
+  async getUsuarioByCedula(cedula: string): Promise<Usuario | undefined> {
+    return await this.usuariosRepository.findOne({
+      where: {
+        cedula,
+      },
+      relations: ["cargo"]
+    });
+  }
+
 }

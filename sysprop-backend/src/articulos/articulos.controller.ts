@@ -7,6 +7,7 @@ import { CreateCompraDto } from 'src/compras/dto/create-compra.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUsuarioDto } from 'src/usuarios/dto/crear-usuario.dto';
 import { Articulo } from 'src/entities/articulo.entity';
+import { listaArticulosDto } from './dto/lista-articulos.dto';
 
 @ApiTags('Articulos')
 @Controller('articulos')
@@ -42,8 +43,8 @@ export class ArticulosController {
     }
 
     @Post('/vender')
-    async descontarArticulo(@Body() articulosVendidos: CreateArticuloDto[]){
-        return this.articulosService.venderArticulo(articulosVendidos)
+    async descontarArticulo(@Body() lista: listaArticulosDto){
+        return this.articulosService.venderArticulo(lista)
     }
 
     //suma

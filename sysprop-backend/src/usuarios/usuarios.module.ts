@@ -8,6 +8,7 @@ import { Cargo } from 'src/entities/cargo.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Usuario, Cargo])],
   controllers: [UsuariosController],
-  providers: [UsuariosService]
+  providers: [UsuariosService],
+  exports: [UsuariosService]
 })
 export class UsuariosModule {}
