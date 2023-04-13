@@ -1,4 +1,5 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { PartialType } from "@nestjs/swagger"
+import { IsDate, IsDateString, IsISO8601, IsNotEmpty, IsNumber, IsString, isISO8601 } from "class-validator"
 
 export class CreateUsuarioDto{
     @IsNotEmpty()
@@ -18,7 +19,7 @@ export class CreateUsuarioDto{
     password: string
 
     @IsNotEmpty()
-    @IsDate()
+    @IsString()
     fechaNacimiento: Date
 
     @IsNotEmpty()

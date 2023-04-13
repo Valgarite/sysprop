@@ -3,9 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from 'src/entities/usuario.entity';
 import { Repository } from 'typeorm';
 import { CreateUsuarioDto } from './dto/crear-usuario.dto';
-import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { Cargo } from 'src/entities/cargo.entity';
 import { CargoDto } from './dto/cargo.dto';
+import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 
 @Injectable()
 export class UsuariosService {

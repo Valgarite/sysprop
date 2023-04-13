@@ -61,10 +61,4 @@ export class UsuariosController {
     deleteCargo(@Param('id', ParseIntPipe) id: number) {
         return this.usuariosService.deleteCargo(id);
     }
-
-    @Post('/login/')
-    iniciarSesion(@Body() datosLogin: CreateUsuarioDto){
-        return this.usuariosService.login(datosLogin.username, datosLogin.password);
-    }
-
 }

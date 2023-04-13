@@ -9,6 +9,8 @@ import { ClientesModule } from './clientes/clientes.module';
 import { ComprasModule } from './compras/compras.module';
 import { ProveedoresModule } from './proveedor/proveedor.module';
 import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from './config';
+import { AuthModule } from './auth/auth.module';
+import { LoginModule } from './login/login.module';
 
 @Module({
   imports: [
@@ -29,7 +31,9 @@ import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from './config';
     VentasModule,
     ClientesModule,
     ComprasModule,
-    ProveedoresModule
+    ProveedoresModule,
+    AuthModule,
+    LoginModule
   ],
   controllers: [AppController],
   providers: [AppService],
