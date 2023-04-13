@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from 'src/entities/usuario.entity';
 import { Repository } from 'typeorm';
@@ -21,22 +21,34 @@ export class UsuariosService {
   async getAllUsuarios(): Promise<Usuario[]> {
     return await this.usuariosRepository.find({ relations: ["cargo"] });
   }
-
   async createUsuario(nuevoUsuario: CreateUsuarioDto, cargo: Cargo): Promise<Usuario> {
 
     const usuario = new Usuario()
 
-    usuario.cedula = nuevoUsuario.cedula;
     usuario.fechaNacimiento = nuevoUsuario.fechaNacimiento;
     usuario.nombre = nuevoUsuario.nombre;
     usuario.correo = nuevoUsuario.correo;
-    usuario.password = nuevoUsuario.password;
-    usuario.username = nuevoUsuario.username;
+
+    const validarUser = await this.getUsuarioByUsername(nuevoUsuario.username)
+    if(!validarUser){
+      usuario.username = nuevoUsuario.username;
+      const validarCedula = await this.getUsuarioByCedula(nuevoUsuario.cedula)
+      if(!validarCedula){
+        usuario.cedula = nuevoUsuario.cedula
+      }
+      else{throw new HttpException('Cedula repetida', HttpStatus.CONFLICT)}
+    }else{throw new HttpException('Usuario repetido', HttpStatus.CONFLICT)}
+    
+    //const hashPassword = bcrypt.hash(nuevoUsuario.password, 10)
+    //usuario.password = await hashPassword;
+    usuario.password = nuevoUsuario.password
+
     const usuarioGuardado = await this.usuariosRepository.save(usuario)
 
     cargo.usuarios = [usuarioGuardado, ...cargo.usuarios]
     await cargo.save()
 
+    //delete usuarioGuardado.password
     return usuarioGuardado;
   }
 
