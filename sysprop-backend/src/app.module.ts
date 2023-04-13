@@ -10,7 +10,8 @@ import { ComprasModule } from './compras/compras.module';
 import { ProveedoresModule } from './proveedor/proveedor.module';
 import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from './config';
 import { bootStrapService } from './on-bootstrap.service';
-
+import { BackupModule } from './backup/backup.module';
+ 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -30,7 +31,8 @@ import { bootStrapService } from './on-bootstrap.service';
     VentasModule,
     ClientesModule,
     ComprasModule,
-    ProveedoresModule
+    ProveedoresModule,
+    BackupModule
   ],
   controllers: [AppController],
   providers: [AppService, bootStrapService],
