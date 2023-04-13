@@ -58,9 +58,9 @@ export class ArticulosService {
           return articuloEncontrado
         }
 
-        async buscarArticulo(dto): Promise<Articulo>{
-          return await this.articulosRepository.findOneBy({'nombre': dto.nombre})
-        }
+        // async buscarArticulo(dto: CreateArticuloDto): Promise<Articulo>{
+        //   return await this.articulosRepository.findOne({where: {dto.nombre}})
+        // }
 
         async sumarArticulo(idArt: number, cantArt: number, sumatoria: number){
           const resultado = cantArt + sumatoria
@@ -82,17 +82,17 @@ export class ArticulosService {
         }
 
         //chatgpgod
-        async venderArticulo(mensaje: listaArticulosDto): Promise<{vendidos: Articulo[], noVendidos: Articulo[], noExistentes: string[]}>{
+        async venderArticulo(mensaje: listaArticulosDto): Promise<{vendidos: string[], noVendidos: string[], noExistentes: string[]}>{
           console.log (mensaje)
           let articulos: string[] = mensaje.articulos
           let cantidades: number[] = mensaje.cantidades
       
-          let listaArticulos: Articulo[] = [];
-          let noVendidos: Articulo[] = [];
+          let listaArticulos: string[] = [];
+          let noVendidos: string[] = [];
           let noExistentes: string[] = [];
       
           for (let i = 0; i < articulos.length; i++) {
-              let articulo = await this.buscarArticulo(articulos[i]);
+              let articulo = await this.getArticuloByNombre(articulos[i]);
               console.log(articulo)
               if (!articulo) {
                   noExistentes.push(articulos[i]);
@@ -100,19 +100,22 @@ export class ArticulosService {
               }
               let valido = true;
               if (articulo.cantidad < cantidades[i]) {
-                  noVendidos.push(articulo);
+                  noVendidos.push(articulo.nombre);
                   valido = false;
               }
               if (cantidades[i] > articulo.cantidad) {
-                  throw new Error(`No hay suficiente inventario para ${articulo.nombre}. Cantidad disponible: ${articulo.cantidad}`);
+              //    throw new Error(`No hay suficiente inventario para ${articulo.nombre}. Cantidad disponible: ${articulo.cantidad}`);
               }
               if (valido) {
-                  listaArticulos.push(articulo);
+                  listaArticulos.push(articulo.nombre);
                   console.log(2)
                   await this.restarArticulo(articulo, cantidades[i]);
+              }else{
+
               }
           }
           console.log(3)
+          
 
           return { vendidos: listaArticulos, noVendidos, noExistentes};
       }

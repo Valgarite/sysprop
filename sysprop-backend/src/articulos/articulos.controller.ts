@@ -29,9 +29,11 @@ export class ArticulosController {
     async postArticulo(@Body() newArticulo: CreateArticuloDto){
         const categoria = await this.articulosService.getCategoriaById(newArticulo.categoria)
         if (categoria){
-            const articuloEncontrado = await this.articulosService.buscarArticulo(newArticulo.nombre)
-
+            const articuloEncontrado = await this.articulosService.getArticuloByNombre(newArticulo.nombre)
+            console.log(articuloEncontrado)
             if (articuloEncontrado){
+                console.log(articuloEncontrado)
+                console.log(newArticulo)
                 return await this.articulosService.sumarArticulo(articuloEncontrado.id, articuloEncontrado.cantidad, newArticulo.cantidad)
             } else {
                 return await this.articulosService.createArticulo(newArticulo, categoria)
@@ -47,17 +49,17 @@ export class ArticulosController {
         return this.articulosService.venderArticulo(lista)
     }
 
-    // //suma
-    // @Post('/lista')
-    // async postListaCompra(@Body() sumarCantidad: CreateArticuloDto){
-    //     const agregado = sumarCantidad.cantidad
-    //     const articuloEncontrado = this.articulosService.getArticuloByNombre(sumarCantidad.nombre)
+    //suma
+    @Post('/lista')
+    async postListaCompra(@Body() sumarCantidad: CreateArticuloDto){
+        const agregado = sumarCantidad.cantidad
+        const articuloEncontrado = this.articulosService.getArticuloByNombre(sumarCantidad.nombre)
 
-    //     const idArticulo = (await articuloEncontrado).id
-    //     const cantidadArticulo = (await articuloEncontrado).cantidad
+        const idArticulo = (await articuloEncontrado).id
+        const cantidadArticulo = (await articuloEncontrado).cantidad
         
-    //     return await this.articulosService.sumarArticulo(idArticulo, cantidadArticulo, agregado);
-    // }
+        return await this.articulosService.sumarArticulo(idArticulo, cantidadArticulo, agregado);
+    }
 
     @Put(':id')
     updateArticulo(@Param('id', ParseIntPipe) id: number, @Body() updateArticulo: UpdateArticuloDto) {
