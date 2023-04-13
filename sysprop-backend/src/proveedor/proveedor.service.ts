@@ -23,6 +23,7 @@ export class ProveedoresService {
             proveedor.rif = nuevoProveedor.rif;
             proveedor.telefono = nuevoProveedor.telefono;
             proveedor.direccion = nuevoProveedor.direccion;
+            proveedor.correo = nuevoProveedor.correo;
       
           return await this.proveedoresRepository.save(proveedor);
         }
