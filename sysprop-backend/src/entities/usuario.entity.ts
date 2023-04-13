@@ -13,7 +13,7 @@ export class Usuario extends BaseEntity{
     @Column({length: 64})
     nombre: string;
 
-    @Column()
+    @Column({type: 'date'})
     fechaNacimiento: Date;
 
     @Column({length: 45})
@@ -22,7 +22,7 @@ export class Usuario extends BaseEntity{
     @Column({length: 25})
     username: string;
 
-    @Column({length: 25})
+    @Column()
     password: string;
 
     @Column({default: ()=> 'TRUE'})

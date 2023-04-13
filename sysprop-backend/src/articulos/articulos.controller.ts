@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseGuards } from '@nestjs/common';
 import { CreateArticuloDto } from './dto/create-articulo.dto';
 import { UpdateArticuloDto } from './dto/update-articulo.dto';
 import { CategoriaDto } from './dto/categoria.dto';
@@ -7,13 +7,15 @@ import { CreateCompraDto } from 'src/compras/dto/create-compra.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUsuarioDto } from 'src/usuarios/dto/crear-usuario.dto';
 import { Articulo } from 'src/entities/articulo.entity';
+import { PermiteEmpleado } from 'src/auth/decorators/empleado.decorador';
+import { AuthGuard } from 'src/auth/guards/api-key.guard';
 
 @ApiTags('Articulos')
 @Controller('articulos')
 export class ArticulosController {
     constructor(private articulosService: ArticulosService){}
 
-
+    @UseGuards(AuthGuard)
     @Get()
     getArticulos(){
         return this.articulosService.getAllArticulos();

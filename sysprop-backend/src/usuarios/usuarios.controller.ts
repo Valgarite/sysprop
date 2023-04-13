@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UseGuards, SetMetadata } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/crear-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { CargoDto } from './dto/cargo.dto';
 import { ApiTags } from '@nestjs/swagger/dist';
+import { AuthGuard } from 'src/auth/guards/api-key.guard';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @ApiTags('Usuarios')
 @Controller('usuarios')
@@ -11,6 +13,7 @@ export class UsuariosController {
 
     constructor(private usuariosService: UsuariosService){}
 
+    
     @Get()
     getUsuarios(){
         return this.usuariosService.getAllUsuarios();
@@ -37,31 +40,32 @@ export class UsuariosController {
         return this.usuariosService.desactivarUsuario(id);
     }
 
-    @Get('/cargos/lista')
-    getCargos(){
-        return this.usuariosService.getAllCargos();
-    }
+    // @Get('/cargos/lista')
+    // getCargos(){
+    //     return this.usuariosService.getAllCargos();
+    // }
 
-    @Get('/cargos/:id')
-    getCargo(@Param('id', ParseIntPipe) id: number){
-        return this.usuariosService.getCargoById(id);
-    }
+    // @Get('/cargos/:id')
+    // getCargo(@Param('id', ParseIntPipe) id: number){
+    //     return this.usuariosService.getCargoById(id);
+    // }
 
-    @Post('/cargos')
-    postCargo(@Body() newCargo: CargoDto){
-        return this.usuariosService.createCargo(newCargo);
-    }
+    // @Post('/cargos')
+    // postCargo(@Body() newCargo: CargoDto){
+    //     return this.usuariosService.createCargo(newCargo);
+    // }
 
-    @Put('/cargos/:id')
-    updateCargo(@Param('id', ParseIntPipe) id: number, @Body() updateCargo: CargoDto) {
-        return this.usuariosService.updateCargo(id, updateCargo);
-    }
+    // //@Put('/cargos/:id')
+    // //updateCargo(@Param('id', ParseIntPipe) id: number, @Body() updateCargo: CargoDto) {
+    // //    return this.usuariosService.updateCargo(id, updateCargo);
+    // //}
 
-    @Delete('/cargos/:id')
-    deleteCargo(@Param('id', ParseIntPipe) id: number) {
-        return this.usuariosService.deleteCargo(id);
-    }
+    // //@Delete('/cargos/:id')
+    // //deleteCargo(@Param('id', ParseIntPipe) id: number) {
+    //     return this.usuariosService.deleteCargo(id);
+    // }
 
+    @Public()
     @Post('/login/')
     iniciarSesion(@Body() datosLogin: CreateUsuarioDto){
         return this.usuariosService.login(datosLogin.username, datosLogin.password);
