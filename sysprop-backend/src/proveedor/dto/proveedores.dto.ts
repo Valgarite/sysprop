@@ -10,6 +10,7 @@ export class CreateProveedorDto{
     rif: string;
 
     @IsString()
+    @IsNotEmpty()
     correo: string;
     
     @IsString()
