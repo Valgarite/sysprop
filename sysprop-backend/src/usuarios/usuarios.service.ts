@@ -148,10 +148,10 @@ export class UsuariosService {
         }
 
       } else {
-        throw new UnauthorizedException()
+        throw new UnauthorizedException("Contraseña incorrecta.")
       }
     } else {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException("Usuario incorrecto o inexistente.")
     }
   }
 
