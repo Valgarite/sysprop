@@ -78,7 +78,6 @@ export class UsuariosController {
 
     @Post('/login/')
     iniciarSesion(@Body() datosLogin: loginUsuarioDto){
-        console.log(datosLogin)
         return this.usuariosService.login(datosLogin.username, datosLogin.password);
     }
 

@@ -130,21 +130,28 @@ export class UsuariosService {
   //en crearusuarios, añadir el revisar si el nombre de usuario está ocupado
   async login(user: string, pass: string){
     const busquedaUsuario = await this.getUsuarioByUsername(user)
-    console.log(busquedaUsuario)
+
     if(busquedaUsuario){
-      const busquedaContraseña = await this.usuariosRepository.findOneBy({'password': pass})
-      console.log(busquedaContraseña)
+      const busquedaContraseña: Usuario = await this.usuariosRepository.findOneBy({'password': pass})
+      
       if(busquedaContraseña){
 
         const respuesta = busquedaContraseña
-        return respuesta
+        const user = {
+          username: respuesta.username,
+          password: respuesta.password
+      }
+        
+        return {
+          user,
+          statusCode: HttpStatus.OK
+        }
+
       } else {
         throw new UnauthorizedException()
-        return ({"respuesta": "Contraseña incorrecta"})
       }
     } else {
       throw new UnauthorizedException()
-      return ({"respuesta": "No existe ese usuario"})
     }
   }
 
