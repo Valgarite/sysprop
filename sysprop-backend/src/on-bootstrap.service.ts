@@ -8,7 +8,7 @@ export class bootStrapService implements OnApplicationBootstrap {
     ){}
 
     onApplicationBootstrap() {
-        this.usuariosService.spawnCargos();
+        //this.usuariosService.spawnCargos();
         this.usuariosService.spawnGerente();
     }
 }

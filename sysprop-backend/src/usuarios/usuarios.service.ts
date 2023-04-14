@@ -4,8 +4,6 @@ import { Usuario } from 'src/entities/usuario.entity';
 import { Repository } from 'typeorm';
 import { CreateUsuarioDto } from './dto/crear-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-import { Cargo } from 'src/entities/cargo.entity';
-import { CargoDto } from './dto/cargo.dto';
 import  * as nodemailer from 'nodemailer'
 import { MailerService } from '@nestjs-modules/mailer';
 
@@ -15,8 +13,6 @@ export class UsuariosService {
     @InjectRepository(Usuario)
     private usuariosRepository: Repository<Usuario>,
 
-    @InjectRepository(Cargo)
-    private cargoRepository: Repository<Cargo>,
     private readonly mailerService: MailerService
   ) { }
 
@@ -67,15 +63,17 @@ export class UsuariosService {
   
 
   async getAllUsuarios(): Promise<Usuario[]> {
-    return await this.usuariosRepository.find({ relations: ["cargo"] });
+    return await this.usuariosRepository.find();
   }
-  async createUsuario(nuevoUsuario: CreateUsuarioDto, cargo: Cargo): Promise<Usuario> {
+  async createUsuario(nuevoUsuario: CreateUsuarioDto): Promise<Usuario> {
 
     const usuario = new Usuario()
 
     usuario.fechaNacimiento = nuevoUsuario.fechaNacimiento;
     usuario.nombre = nuevoUsuario.nombre;
     usuario.correo = nuevoUsuario.correo;
+    usuario.cedula = nuevoUsuario.cedula;
+    usuario.cargo = nuevoUsuario.cargo;
 
     const validarUser = await this.getUsuarioByUsername(nuevoUsuario.username)
     if(!validarUser){
@@ -93,8 +91,6 @@ export class UsuariosService {
 
     const usuarioGuardado = await this.usuariosRepository.save(usuario)
 
-    cargo.usuarios = [usuarioGuardado, ...cargo.usuarios]
-    await cargo.save()
 
     //delete usuarioGuardado.password
     return usuarioGuardado;
@@ -105,23 +101,26 @@ export class UsuariosService {
       where: {
         id,
       },
-      relations: ["cargo"] 
     });
 
     return await respuesta
   }
 
   async updateUsuario(id: string, updateUsuario: UpdateUsuarioDto): Promise<Usuario> {
-    const idPideCambio = updateUsuario.idDelQuePideElcambio - 1
+    //Los comentarios de acá son para manejar la lógica de los roles en torno a
+    //los IDs de cargo. Dichos IDs ya no existen por lo que la lógica se deberá manejar
+    //de forma distinta ya sea desde el frontend o backend, pero debe existir.
+
+    //const idPideCambio = updateUsuario.idDelQuePideElcambio - 1
 
     const usuario = await this.getUsuarioById(id);
 
-    if ( !(usuario.cargo.id > idPideCambio) ){
+    //if ( !(usuario.cargo.id > idPideCambio) ){
       this.usuariosRepository.merge(usuario, updateUsuario);
       return await this.usuariosRepository.save(usuario);
-    }else{
-      throw new UnauthorizedException("No se puede cambiar el cargo de alguien de mayor cargo que usted.")
-    }
+    // }else{
+    //   throw new UnauthorizedException("No se puede cambiar el cargo de alguien de mayor cargo que usted.")
+    // }
 
     
   }
@@ -166,83 +165,79 @@ export class UsuariosService {
   }
 
 
-  async getAllCargos(): Promise<Cargo[]> {
-    return await this.cargoRepository.find();
+  // async getAllCargos(): Promise<Cargo[]> {
+  //   return await this.cargoRepository.find();
+  // }
+
+  // async getCargoById(id: number): Promise<Cargo> {
+  //   return await this.cargoRepository.findOne({
+  //     where: {
+  //       id,
+  //     },
+  //     relations: ['usuarios']
+  //   });
+  // }
+
+  // async createCargo(nuevaCargo: CargoDto): Promise<Cargo> {
+  //   const cargo = new Cargo();
+  //   cargo.nombre = nuevaCargo.nombre;
+  //   return await this.cargoRepository.save(cargo)
+  // }
+
+  // async deleteCargo(id: any): Promise<void> {
+  //   await this.cargoRepository.delete(id);
+  // }
+
+  // async updateCargo(id: number, updateCargo: CargoDto): Promise<Cargo> {
+  //   const cargo = await this.getCargoById(id);
+  //   this.cargoRepository.merge(cargo, updateCargo);
+  //   return await this.cargoRepository.save(cargo);
+  // }
+
+  async getUsuarioByCargo(cargo: string): Promise<Usuario> {
+    return await this.usuariosRepository.findOne(
+      {where: {
+        cargo
+      }});
   }
 
-  async getCargoById(id: number): Promise<Cargo> {
-    return await this.cargoRepository.findOne({
-      where: {
-        id,
-      },
-      relations: ['usuarios']
-    });
-  }
+  // async spawnCargos(): Promise<void>{
 
-  async createCargo(nuevaCargo: CargoDto): Promise<Cargo> {
-    const cargo = new Cargo();
-    cargo.nombre = nuevaCargo.nombre;
-    return await this.cargoRepository.save(cargo)
-  }
+  //   //Crea los cargos durante la primera ejecución del programa.
+  //   const cargo = ["Empleado", "Administrador", "Gerente"]
+  //   let cargoSeleccionado: Cargo
+  //   let convertirDto: CargoDto = {"nombre": ''}
 
-  async deleteCargo(id: any): Promise<void> {
-    await this.cargoRepository.delete(id);
-  }
+  //   for (let i=0; i<3; i++){
+  //     cargoSeleccionado = await this.getUsuarioByCargo(cargo[i])
+  //     if(!cargoSeleccionado){
 
-  async updateCargo(id: number, updateCargo: CargoDto): Promise<Cargo> {
-    const cargo = await this.getCargoById(id);
-    this.cargoRepository.merge(cargo, updateCargo);
-    return await this.cargoRepository.save(cargo);
-  }
-
-  async getCargoByNombre(nombre: string): Promise<Cargo> {
-    return await this.cargoRepository.findOne({
-      where: {
-        nombre,
-      },
-      relations: ['usuarios']
-    });
-  }
-
-  async spawnCargos(): Promise<void>{
-
-    //Crea los cargos durante la primera ejecución del programa.
-    const cargo = ["Empleado", "Administrador", "Gerente"]
-    let cargoSeleccionado: Cargo
-    let convertirDto: CargoDto = {"nombre": ''}
-
-    for (let i=0; i<3; i++){
-      cargoSeleccionado = await this.getCargoByNombre(cargo[i])
-      if(!cargoSeleccionado){
-
-        convertirDto.nombre = cargo[i]
-        console.log(convertirDto)
-        await this.createCargo(convertirDto)
-      }else{
-        console.log("El cargo: ",cargo[i], " ya existía en la BDD")
-      }
-    }
-  }
+  //       convertirDto.nombre = cargo[i]
+  //       console.log(convertirDto)
+  //       await this.createCargo(convertirDto)
+  //     }else{
+  //       console.log("El cargo: ",cargo[i], " ya existía en la BDD")
+  //     }
+  //   }
+  // }
 
   async spawnGerente(): Promise<void>{
     let datosGerente: CreateUsuarioDto={
       "cedula": "000000",
-      "username": "admin",
-      "password": "zeus",
+      "username": "Gerente",
+      "password": "Gerente",
       "nombre": "sysprop",
-      "cargo": 3,
+      "cargo": "Gerente",
       "correo": "carlsgutierrez259@gmail.com",
       "fechaNacimiento": new Date(Date.parse("2002-12-26"))
     }
 
-    const buscarGerente = await this.getUsuarioByUsername(datosGerente.username)
+    const buscarGerente = await this.getUsuarioByCargo(datosGerente.cargo)
     if(!buscarGerente){
-      const cargoGerente = await this.getCargoById(datosGerente.cargo)
-      await this.createUsuario(datosGerente, cargoGerente)
+      await this.createUsuario(datosGerente)
     } else {
       console.log("Ya había un gerente registrado en esta BDD")
     }
-
   }
 
   async getUsuarioByUsername(username: string): Promise<Usuario | undefined> {
@@ -250,7 +245,6 @@ export class UsuariosService {
       where: {
         username,
       },
-      relations: ["cargo"]
     });
   }
 
@@ -259,7 +253,6 @@ export class UsuariosService {
       where: {
         cedula,
       },
-      relations: ["cargo"]
     });
   }
 

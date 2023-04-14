@@ -26,6 +26,6 @@ export class CreateUsuarioDto{
     correo: string
 
     @IsNotEmpty()
-    @IsNumber()
-    cargo: number
+    @IsString()
+    cargo: string
 }

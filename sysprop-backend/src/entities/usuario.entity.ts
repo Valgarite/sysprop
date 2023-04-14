@@ -1,5 +1,4 @@
 import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Cargo } from './cargo.entity';
 import { Venta } from './venta.entity';
 
 @Entity()
@@ -25,12 +24,15 @@ export class Usuario extends BaseEntity{
     @Column()
     password: string;
 
+    @Column()
+    cargo: string;
+
     @Column({default: ()=> 'TRUE'})
     estado_activo: boolean;
 
     @OneToMany(()=>Venta, venta=>venta.id)
     venta: Venta[]
 
-    @ManyToOne(()=>Cargo, cargo=>cargo.id, {cascade: true})
-    cargo: Cargo;
+    // @ManyToOne(()=>Cargo, cargo=>cargo.id, {cascade: true})
+    // cargo: Cargo;
 }

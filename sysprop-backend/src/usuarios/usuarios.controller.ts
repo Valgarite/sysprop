@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, 
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/crear-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-import { CargoDto } from './dto/cargo.dto';
 import { ApiTags } from '@nestjs/swagger/dist';
 import { loginUsuarioDto } from './dto/login.dto';
 
@@ -22,11 +21,11 @@ export class UsuariosController {
         return this.usuariosService.getUsuarioById(id);
     }
 
-    @Post()
-    async postUsuario(@Body() newUsuario: CreateUsuarioDto){
-        const cargo = await this.usuariosService.getCargoById(newUsuario.cargo)
-        return this.usuariosService.createUsuario(newUsuario, cargo);
-    }
+    // @Post()
+    // async postUsuario(@Body() newUsuario: CreateUsuarioDto){
+    //     const cargo = await this.usuariosService.getCargoById(newUsuario.cargo)
+    //     return this.usuariosService.createUsuario(newUsuario, cargo);
+    // }
     @Post('/recuperar')
     sendEmail(@Body() body: { to: string }) {
         const { to } = body;
@@ -51,30 +50,30 @@ export class UsuariosController {
         return this.usuariosService.desactivarUsuario(id);
     }
 
-    @Get('/cargos/lista')
-    getCargos(){
-        return this.usuariosService.getAllCargos();
-    }
+    // @Get('/cargos/lista')
+    // getCargos(){
+    //     return this.usuariosService.getAllCargos();
+    // }
 
-    @Get('/cargos/:id')
-    getCargo(@Param('id', ParseIntPipe) id: number){
-        return this.usuariosService.getCargoById(id);
-    }
+    // @Get('/cargos/:id')
+    // getCargo(@Param('id', ParseIntPipe) id: number){
+    //     return this.usuariosService.getCargoById(id);
+    // }
 
-    @Post('/cargos')
-    postCargo(@Body() newCargo: CargoDto){
-        return this.usuariosService.createCargo(newCargo);
-    }
+    // @Post('/cargos')
+    // postCargo(@Body() newCargo: CargoDto){
+    //     return this.usuariosService.createCargo(newCargo);
+    // }
 
-    @Put('/cargos/:id')
-    updateCargo(@Param('id', ParseIntPipe) id: number, @Body() updateCargo: CargoDto) {
-        return this.usuariosService.updateCargo(id, updateCargo);
-    }
+    // @Put('/cargos/:id')
+    // updateCargo(@Param('id', ParseIntPipe) id: number, @Body() updateCargo: CargoDto) {
+    //     return this.usuariosService.updateCargo(id, updateCargo);
+    // }
 
-    @Delete('/cargos/:id')
-    deleteCargo(@Param('id', ParseIntPipe) id: number) {
-        return this.usuariosService.deleteCargo(id);
-    }
+    // @Delete('/cargos/:id')
+    // deleteCargo(@Param('id', ParseIntPipe) id: number) {
+    //     return this.usuariosService.deleteCargo(id);
+    // }
 
     @Post('/login/')
     iniciarSesion(@Body() datosLogin: loginUsuarioDto){
