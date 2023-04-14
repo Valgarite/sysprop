@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/crear-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { CargoDto } from './dto/cargo.dto';
 import { ApiTags } from '@nestjs/swagger/dist';
+import { loginUsuarioDto } from './dto/login.dto';
 
 @ApiTags('Usuarios')
 @Controller('usuarios')
@@ -26,6 +27,19 @@ export class UsuariosController {
         const cargo = await this.usuariosService.getCargoById(newUsuario.cargo)
         return this.usuariosService.createUsuario(newUsuario, cargo);
     }
+    @Post('/recuperar')
+    sendEmail(@Body() body: { to: string }) {
+        const { to } = body;
+        const user = this.usuariosService.buscarPorCorreo(to);
+        if (user) {
+        const pass = "recuperar123";
+        const subject = 'Sistema de recuperación';
+        this.usuariosService.sendEmail(to, subject, '', pass);
+        } else {
+        // Manejar el caso en que no se encontró un usuario con el correo electrónico proporcionado
+        // Puedes lanzar un error, enviar una respuesta específica, o realizar otra acción según tus necesidades
+        throw new NotFoundException('Usuario no encontrado');
+    }}
 
     @Put(':id')
     update(@Param('id') id: string, @Body() updateUsuario: UpdateUsuarioDto) {
@@ -63,7 +77,8 @@ export class UsuariosController {
     }
 
     @Post('/login/')
-    iniciarSesion(@Body() datosLogin: CreateUsuarioDto){
+    iniciarSesion(@Body() datosLogin: loginUsuarioDto){
+        console.log(datosLogin)
         return this.usuariosService.login(datosLogin.username, datosLogin.password);
     }
 

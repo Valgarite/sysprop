@@ -9,6 +9,7 @@ import { Cliente } from 'src/entities/clientes.entity';
 import { RelacionarVenta } from './dto/create-venta.dto/descontar.dto';
 import { union_Venta_Articulos } from 'src/entities/union_articulo_venta.entity';
 import { Articulo } from 'src/entities/articulo.entity';
+import { ventaCompletaDto } from './dto/todalaventa.dto';
 
 @Injectable()
 export class VentasService {
@@ -69,14 +70,20 @@ export class VentasService {
   //  return union;
   //}
 
-  async restarInventario(descontar: RelacionarVenta): Promise<union_Venta_Articulos>{
+  //##################################################################################
+  //comentada a las 2:07am
+  // async restarInventario(ventaCompleta: ventaCompletaDto): Promise<union_Venta_Articulos>{
 
-    const relacionInventarioConVenta = new union_Venta_Articulos();
+  //   const datosVenta.articulo: union_Venta_Articulos = ventaCompleta.articuloid
+  //   const relacionInventarioConVenta = new union_Venta_Articulos();
+  //   const venta = await this.createVenta(datosVenta);
 
-    relacionInventarioConVenta.cantidad = descontar.cantidad;
-    relacionInventarioConVenta.articulo = descontar.articuloid;
-    relacionInventarioConVenta.venta = descontar.ventaid;
+  //   const descontar: CreateVentaDto = ventaCompleta
+  //   relacionInventarioConVenta.cantidad = descontar.total;
+  //   relacionInventarioConVenta.articulo = descontar.articuloid;
+  //   relacionInventarioConVenta.venta = venta.id;
 
-    return await this.unionRepository.save(relacionInventarioConVenta)
-  }
+  //   return await this.unionRepository.save(relacionInventarioConVenta)
+  // }
+  //###############################################################################################
 }

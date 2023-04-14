@@ -5,6 +5,7 @@ import { UpdateVentaDto } from './dto/update-venta.dto/update-venta.dto';
 import { RelacionarVenta } from './dto/create-venta.dto/descontar.dto';
 import { union_Venta_Articulos } from 'src/entities/union_articulo_venta.entity';
 import { ApiTags } from '@nestjs/swagger';
+import { ventaCompletaDto } from './dto/todalaventa.dto';
 
 @ApiTags('Ventas')
 @Controller('ventas')
@@ -37,9 +38,7 @@ export class VentasController {
     }
 
     @Post('/union')
-    crearUnion(@Body() descontar: RelacionarVenta){
-        return this.ventasService.restarInventario(descontar);
+    crearUnion(@Body() ventaCompleta: ventaCompletaDto){
+    //    return this.ventasService.restarInventario(ventaCompleta);
     }
-
-
 }

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from 'src/entities/usuario.entity';
 import { Repository } from 'typeorm';
@@ -6,6 +6,8 @@ import { CreateUsuarioDto } from './dto/crear-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { Cargo } from 'src/entities/cargo.entity';
 import { CargoDto } from './dto/cargo.dto';
+import  * as nodemailer from 'nodemailer'
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class UsuariosService {
@@ -14,9 +16,55 @@ export class UsuariosService {
     private usuariosRepository: Repository<Usuario>,
 
     @InjectRepository(Cargo)
-    private cargoRepository: Repository<Cargo>
-
+    private cargoRepository: Repository<Cargo>,
+    private readonly mailerService: MailerService
   ) { }
+
+  async buscarPorCorreo(entrada):Promise<Usuario>{
+    const correo = entrada
+    const correoEncontrado = await this.usuariosRepository.findOne({
+      where: {
+        correo,
+      },
+    })
+    console.log(correoEncontrado)
+
+    if(correoEncontrado){
+      return correoEncontrado
+    }
+  }
+  
+  async sendEmail(
+    to: string,
+    subject: string,
+    body: string,
+    variable: any,
+  ): Promise<void> {
+    // Crea un objeto de transporte de correo
+    const transporter = nodemailer.createTransport({
+      // Configura los detalles del servidor de correo
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // Usar SSL
+      auth: {
+        user: 'sysprop123@gmail.com', // Tu dirección de correo electrónico
+        pass: 'helados123', // Tu contraseña de correo electrónico
+      },
+    });
+
+    // Configura los detalles del correo electrónico
+    const mailOptions = {
+      from: 'sysprop123@gmail.com', // Tu dirección de correo electrónico
+      to, // Dirección de correo electrónico del destinatario
+      subject, // Asunto del correo electrónico
+      html: `<h1 style="text-align:center">Bienvenido</h1>
+      <p style="text-align:center">Se le ha asignado la siguiente contraseña:</p>
+      <input value="${variable}" style="display:block; margin:0 auto; padding:10px; font-size:16px; text-align:center" disabled>`, // Cuerpo del correo electrónico (puedes usar HTML)
+    };
+    // Envía el correo electrónico
+    await transporter.sendMail(mailOptions);
+  }
+  
 
   async getAllUsuarios(): Promise<Usuario[]> {
     return await this.usuariosRepository.find({ relations: ["cargo"] });
@@ -81,17 +129,21 @@ export class UsuariosService {
 
   //en crearusuarios, añadir el revisar si el nombre de usuario está ocupado
   async login(user: string, pass: string){
-    const busquedaUsuario = await this.usuariosRepository.findOneBy({'username': user})
+    const busquedaUsuario = await this.getUsuarioByUsername(user)
+    console.log(busquedaUsuario)
     if(busquedaUsuario){
-      const busquedaContraseña = await this.usuariosRepository.findOneBy({'username': user, 'password': pass})
+      const busquedaContraseña = await this.usuariosRepository.findOneBy({'password': pass})
+      console.log(busquedaContraseña)
       if(busquedaContraseña){
-        delete busquedaContraseña.password;
+
         const respuesta = busquedaContraseña
         return respuesta
       } else {
+        throw new UnauthorizedException()
         return ({"respuesta": "Contraseña incorrecta"})
       }
     } else {
+      throw new UnauthorizedException()
       return ({"respuesta": "No existe ese usuario"})
     }
   }
@@ -193,5 +245,26 @@ export class UsuariosService {
       relations: ["cargo"]
     });
   }
+
+  // async login(user: string, pass: string){
+  //   const busquedaUsuario = await this.usuariosRepository.findOneBy({'username': user})
+  //   if(busquedaUsuario){
+  //     const busquedaContraseña = await this.usuariosRepository.findOneBy({'username': user, 'password': pass})
+
+  //     if(busquedaContraseña){
+  //       const respuesta = busquedaUsuario
+
+  //       if (respuesta.estado_activo){
+  //         return busquedaUsuario
+  //       } else{
+  //         return({"respuesta": "Usuario bloqueado"})
+  //       }
+  //     } else {
+  //       return ({"respuesta": "Contraseña incorrecta"})
+  //     }
+  //   } else {
+  //     return ({"respuesta": "No existe ese usuario"})
+  //   }
+  // }
 
 }
