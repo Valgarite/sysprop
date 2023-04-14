@@ -10,6 +10,6 @@ import { union_Compra_Articulos } from 'src/entities/union_articulo_compra.entit
 @Module({
   imports: [TypeOrmModule.forFeature([Articulo, union_Venta_Articulos, Categoria, union_Compra_Articulos])],
   providers: [ArticulosService],
-  controllers: [ArticulosController]
+  controllers: [ArticulosController],
 })
 export class ArticulosModule {}

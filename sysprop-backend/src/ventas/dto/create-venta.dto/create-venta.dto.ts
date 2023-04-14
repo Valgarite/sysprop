@@ -8,8 +8,4 @@ export class CreateVentaDto {
     @IsNumber()
     @IsNotEmpty()
     idcliente: any;
-
-    @IsNumber()
-    @IsNotEmpty()
-    total: number;
 }

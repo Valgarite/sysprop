@@ -112,9 +112,18 @@ export class UsuariosService {
   }
 
   async updateUsuario(id: string, updateUsuario: UpdateUsuarioDto): Promise<Usuario> {
+    const idPideCambio = updateUsuario.idDelQuePideElcambio - 1
+
     const usuario = await this.getUsuarioById(id);
-    this.usuariosRepository.merge(usuario, updateUsuario);
-    return await this.usuariosRepository.save(usuario);
+
+    if ( !(usuario.cargo.id > idPideCambio) ){
+      this.usuariosRepository.merge(usuario, updateUsuario);
+      return await this.usuariosRepository.save(usuario);
+    }else{
+      throw new UnauthorizedException("No se puede cambiar el cargo de alguien de mayor cargo que usted.")
+    }
+
+    
   }
 
   async desactivarUsuario(id: any): Promise<void> {
@@ -137,22 +146,23 @@ export class UsuariosService {
       if(busquedaContraseña){
 
         const respuesta = busquedaUsuario
-        const user = {
-          username: respuesta.username,
-          password: respuesta.password
-      }
-        
-        return {
-          user,
-          statusCode: HttpStatus.OK
-        }
 
-      } else {
-        throw new UnauthorizedException("Contraseña incorrecta.")
-      }
-    } else {
-      throw new UnauthorizedException("Usuario incorrecto o inexistente.")
-    }
+        if(respuesta.estado_activo){
+          const user = {
+            username: respuesta.username,
+            nombre: respuesta.nombre,
+            cedula: respuesta.cedula,
+            correo: respuesta.correo,
+            estado_activo: respuesta.estado_activo,
+            //numIntentos: respuesta.num_intentos
+          }
+          return {
+            user,
+            statusCode: HttpStatus.OK
+          }
+        } else{throw new UnauthorizedException("Su usuario está bloqueado del sistema.")}
+      } else {throw new UnauthorizedException("Contraseña incorrecta.")}
+    } else {throw new UnauthorizedException("Usuario incorrecto o inexistente.")}
   }
 
 

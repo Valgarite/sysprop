@@ -111,11 +111,15 @@ export class ArticulosService {
                   console.log(2)
                   await this.restarArticulo(articulo, cantidades[i]);
               }else{
-
+                  
               }
           }
           console.log(3)
           
+          const afectados = listaArticulos
+          for (let i = 0; i < afectados.length; i++){
+            afectados[i]
+          }
 
           return { vendidos: listaArticulos, noVendidos, noExistentes};
       }

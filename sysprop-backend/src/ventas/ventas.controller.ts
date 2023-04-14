@@ -17,6 +17,11 @@ export class VentasController {
         return this.ventasService.getAllVentas();
     }
 
+    @Get('/detalles/:id')
+    getDetalles(@Param('id', ParseIntPipe) id: number){
+        return this.ventasService.getDetalles(id);
+    }
+
     @Get(':id')
     getVenta(@Param('id', ParseIntPipe) id: number){
         return this.ventasService.getVentaById(id);
@@ -41,4 +46,10 @@ export class VentasController {
     crearUnion(@Body() ventaCompleta: ventaCompletaDto){
     //    return this.ventasService.restarInventario(ventaCompleta);
     }
+
+    @Post('/prueba')
+    prueba(@Body() ventas: string[]){
+        return this.ventasService.getTotalAPartirDeNombre(ventas)
+    }
+
 }

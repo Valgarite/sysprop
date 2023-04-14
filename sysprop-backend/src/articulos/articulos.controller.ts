@@ -55,16 +55,16 @@ export class ArticulosController {
     }
 
     //suma
-    @Post('/lista')
-    async postListaCompra(@Body() sumarCantidad: CreateArticuloDto){
-        const agregado = sumarCantidad.cantidad
-        const articuloEncontrado = this.articulosService.getArticuloByNombre(sumarCantidad.nombre)
+    // @Post('/lista')
+    // async postListaCompra(@Body() sumarCantidad: CreateArticuloDto){
+    //     const agregado = sumarCantidad.cantidad
+    //     const articuloEncontrado = this.articulosService.getArticuloByNombre(sumarCantidad.nombre)
 
-        const idArticulo = (await articuloEncontrado).id
-        const cantidadArticulo = (await articuloEncontrado).cantidad
+    //     const idArticulo = (await articuloEncontrado).id
+    //     const cantidadArticulo = (await articuloEncontrado).cantidad
         
-        return await this.articulosService.sumarArticulo(idArticulo, cantidadArticulo, agregado);
-    }
+    //     return await this.articulosService.sumarArticulo(idArticulo, cantidadArticulo, agregado);
+    // }
 
     @Put(':id')
     updateArticulo(@Param('id', ParseIntPipe) id: number, @Body() updateArticulo: UpdateArticuloDto) {
