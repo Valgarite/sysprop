@@ -11,6 +11,6 @@ export class UpdateArticuloDto {
   @IsNumber()
   cantidad?: number;
 
-  @IsNumber()
-  categoria?: Categoria;
+  @IsString()
+  categoria?: string;
   }

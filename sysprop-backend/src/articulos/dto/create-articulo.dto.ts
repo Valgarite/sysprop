@@ -14,7 +14,7 @@ export class CreateArticuloDto{
     @IsNotEmpty()
     precio: number;
 
-    @IsNumber()
+    @IsString()
     @IsNotEmpty()
-    categoria: number;
+    categoria: string;
 }

@@ -26,21 +26,19 @@ export class ArticulosService {
         ) {}
       
         async getAllArticulos(): Promise<Articulo[]> {
-          return await this.articulosRepository.find({relations: ['categoria']});
+          return await this.articulosRepository.find()           
         }
       
-        async createArticulo(nuevoArticulo: CreateArticuloDto, categoria: Categoria): Promise<Articulo> {
+        async createArticulo(nuevoArticulo: CreateArticuloDto): Promise<Articulo> {
             const articulo = new Articulo()
             
             articulo.nombre = nuevoArticulo.nombre;
             articulo.cantidad = nuevoArticulo.cantidad;
             articulo.precio = nuevoArticulo.precio;
-            const articuloGuardado = await this.articulosRepository.save(articulo)
-
-            categoria.articulos = [articuloGuardado, ...categoria.articulos]
-            await categoria.save()
+            articulo.categoria = nuevoArticulo.categoria
+            await articulo.save()
       
-          return articuloGuardado ;
+          return articulo ;
         }
       
         async getArticuloById(id: number): Promise<Articulo> {
@@ -48,7 +46,6 @@ export class ArticulosService {
             where: {
               id,
             },
-            relations:['categoria']
           });
         }
 

@@ -18,8 +18,8 @@ export class Articulo extends BaseEntity{
     @Column({type: 'decimal', precision: 8, scale: 2})
     precio: number;
 
-    @ManyToOne(() => Categoria, categoria => categoria.nombre)
-    categoria: Categoria;
+    @Column({length: 30})
+    categoria: string;
 
     @Column({default: ()=> 'TRUE'})
     estado_activo: boolean;

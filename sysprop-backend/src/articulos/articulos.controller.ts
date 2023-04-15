@@ -32,8 +32,6 @@ export class ArticulosController {
 
     @Post('/comprar')
     async postArticulo(@Body() newArticulo: CreateArticuloDto){
-        const categoria = await this.articulosService.getCategoriaById(newArticulo.categoria)
-        if (categoria){
             const articuloEncontrado = await this.articulosService.getArticuloByNombre(newArticulo.nombre)
             console.log(articuloEncontrado)
             if (articuloEncontrado){
@@ -41,12 +39,8 @@ export class ArticulosController {
                 console.log(newArticulo)
                 return await this.articulosService.sumarArticulo(articuloEncontrado.id, articuloEncontrado.cantidad, newArticulo.cantidad)
             } else {
-                return await this.articulosService.createArticulo(newArticulo, categoria)
+                return await this.articulosService.createArticulo(newArticulo)
             }
-
-        } else {
-            return {"respuesta": "No se encontró la categoría."}
-        }
     }
 
     @Post('/vender')
