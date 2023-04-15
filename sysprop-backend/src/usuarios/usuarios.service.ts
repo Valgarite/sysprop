@@ -138,9 +138,15 @@ export class UsuariosService {
   async desactivarUsuario(id: any): Promise<void> {
     const usuario = await this.getUsuarioById(id);
     const viejo = usuario
-    usuario.estado_activo = false
+    if(usuario.estado_activo){
+      usuario.estado_activo = false
+      
+    }else{
+      usuario.estado_activo = true
+    }
     const mezcla = await this.usuariosRepository.merge(viejo, usuario)
-    await this.usuariosRepository.save(mezcla);
+    const resultado = await this.usuariosRepository.save(mezcla);
+    console.log(resultado)
   }
 
   async deleteUsuario(id: any): Promise<void> {

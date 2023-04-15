@@ -16,7 +16,7 @@ export class ClientesService {
           return await this.clientesRepository.find();
         }
       
-        async createCliente(nuevoCliente: CreateClienteDto): Promise<Cliente> {
+        async createCliente(nuevoCliente: CreateClienteDto): Promise<Cliente> {         
             const cliente = new Cliente()
             
             cliente.nombre = nuevoCliente.nombre;
