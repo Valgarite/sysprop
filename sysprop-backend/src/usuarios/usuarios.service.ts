@@ -130,24 +130,17 @@ export class UsuariosService {
   }
 
   async updateUsuario(id: string, updateUsuario: UpdateUsuarioDto): Promise<Usuario> {
-    const idPideCambio = updateUsuario.idDelQuePideElcambio - 1
-
     const usuario = await this.getUsuarioById(id);
-
-    if ( !(usuario.cargo.id > idPideCambio) ){
-      this.usuariosRepository.merge(usuario, updateUsuario);
-      return await this.usuariosRepository.save(usuario);
-    }else{
-      throw new UnauthorizedException("No se puede cambiar el cargo de alguien de mayor cargo que usted.")
-    }
-
-    
+    this.usuariosRepository.merge(usuario, updateUsuario);
+    return await this.usuariosRepository.save(usuario);
   }
 
   async desactivarUsuario(id: any): Promise<void> {
     const usuario = await this.getUsuarioById(id);
+    const viejo = usuario
     usuario.estado_activo = false
-    await this.usuariosRepository.save(usuario);
+    const mezcla = await this.usuariosRepository.merge(viejo, usuario)
+    await this.usuariosRepository.save(mezcla);
   }
 
   async deleteUsuario(id: any): Promise<void> {

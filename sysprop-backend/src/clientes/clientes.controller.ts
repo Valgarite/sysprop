@@ -33,5 +33,4 @@ export class ClientesController {
     deleteCliente(@Param('id', ParseIntPipe) id: number) {
         return this.clientesService.desactivarCliente(id);
     }
-
 }

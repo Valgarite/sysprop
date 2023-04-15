@@ -13,6 +13,7 @@ import { ventaCompletaDto } from './dto/todalaventa.dto';
 import { ArticulosService } from 'src/articulos/articulos.service';
 import { listaArticulosDto } from 'src/articulos/dto/lista-articulos.dto';
 import { Categoria } from 'src/entities/categoria.entity';
+import { UsuariosService } from 'src/usuarios/usuarios.service';
 
 @Injectable()
 export class VentasService {
@@ -34,12 +35,24 @@ export class VentasService {
     @InjectRepository(Categoria)
     private categoriaRepository: Repository<Categoria>,
 
-    private articulosServices: ArticulosService
+    private articulosServices: ArticulosService,
+    private usuariosServices: UsuariosService
   ) {}
 
   async getAllVentas(): Promise<Venta[]> {
     const venta = this.ventasRepository.find({relations: ['idusuario', 'idcliente', 'union.articulo', 'union.venta']})
     return await venta;
+  }
+
+  async getListaVentas(): Promise<Venta[]>{
+    const lista = await this.getAllVentas()
+    let display: Venta[] = []
+    lista.forEach(element => {
+      const usuarioData = this.usuariosServices.getUsuarioById(element.idusuario.toString())
+      console.log(usuarioData)
+    });
+
+    return
   }
 
   async createVenta(nuevaVenta: CreateVentaDto): Promise<Venta> {

@@ -28,11 +28,6 @@ export class UsuariosController {
         return this.usuariosService.createUsuario(newUsuario, cargo);
     }
 
-    @Post('/prueba')
-    enviarCorreo(@Body() busqueda: {"correo": string}){
-        return this.usuariosService.buscarPorCorreo(busqueda.correo)
-    }
-
     @Put(':id')
     update(@Param('id') id: string, @Body() updateUsuario: UpdateUsuarioDto) {
         return this.usuariosService.updateUsuario(id, updateUsuario);
@@ -72,5 +67,4 @@ export class UsuariosController {
     iniciarSesion(@Body() datosLogin: loginUsuarioDto){
         return this.usuariosService.login(datosLogin.username, datosLogin.password);
     }
-
 }

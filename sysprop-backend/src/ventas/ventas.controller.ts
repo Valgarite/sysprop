@@ -20,11 +20,15 @@ export class VentasController {
         return this.ventasService.getAllVentas();
     }
 
-    //Descomentar después de commit
-    // @Get('/detalles/:id')
-    // getDetalles(@Param('id', ParseIntPipe) id: number){
-    //     return this.ventasService.getDetalles(id);
-    // }
+    @Get('/lista')
+    getListaVentas(){
+        return this.ventasService.getListaVentas();//falta terminar
+    }
+    
+    @Get('/detalles/:id')
+    getDetalles(@Param('id', ParseIntPipe) id:number){
+        return this.ventasService.getDetalles(id); //falta terminar
+    }
 
     @Get(':id')
     getVenta(@Param('id', ParseIntPipe) id: number){
