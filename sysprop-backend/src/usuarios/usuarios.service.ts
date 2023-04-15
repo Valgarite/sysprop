@@ -21,11 +21,22 @@ export class UsuariosService {
   ) { }
 
   async buscarPorCorreo(entrada):Promise<Usuario>{
+    console.log(entrada)
     const correo = entrada
     const correoEncontrado = await this.usuariosRepository.findOne({
-      where: {
-        correo,
-      },
+      where: {correo: correo},
+    })
+    if(correoEncontrado){
+      return correoEncontrado
+    }
+  }
+
+  async buscarUsuarioPorCorreo(entrada):Promise<Usuario>{
+    console.log(entrada)
+    const correo = entrada
+    const correoEncontrado = await this.usuariosRepository.findOne({
+      select:{correo: true},
+      where: {correo: correo},
     })
     console.log(correoEncontrado)
 
@@ -37,7 +48,6 @@ export class UsuariosService {
   async sendEmail(
     to: string,
     subject: string,
-    body: string,
     variable: any,
   ): Promise<void> {
     // Crea un objeto de transporte de correo
@@ -45,24 +55,32 @@ export class UsuariosService {
       // Configura los detalles del servidor de correo
       host: 'smtp.gmail.com',
       port: 465,
-      secure: true, // Usar SSL
       auth: {
         user: 'sysprop123@gmail.com', // Tu dirección de correo electrónico
-        pass: 'helados123', // Tu contraseña de correo electrónico
+        pass: 'wklgcjfcdranmlzp', // Tu contraseña de correo electrónico
       },
     });
-
+      console.log("enviado a ", to) 
+      const destinatario = to
     // Configura los detalles del correo electrónico
     const mailOptions = {
       from: 'sysprop123@gmail.com', // Tu dirección de correo electrónico
-      to, // Dirección de correo electrónico del destinatario
+      to: destinatario, // Dirección de correo electrónico del destinatario
       subject, // Asunto del correo electrónico
       html: `<h1 style="text-align:center">Bienvenido</h1>
       <p style="text-align:center">Se le ha asignado la siguiente contraseña:</p>
       <input value="${variable}" style="display:block; margin:0 auto; padding:10px; font-size:16px; text-align:center" disabled>`, // Cuerpo del correo electrónico (puedes usar HTML)
     };
     // Envía el correo electrónico
-    await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions).catch();
+
+    //Realiza el cambio en la BDD
+    const cambio = {
+      "password": variable
+    }
+    const usuarioViejo = await this.buscarUsuarioPorCorreo(to)
+    const usuarioNuevo = this.usuariosRepository.merge(usuarioViejo, cambio);
+    const resultado = await this.usuariosRepository.save(usuarioNuevo);
   }
   
 

@@ -15,10 +15,14 @@ import { MailerModule } from '@nestjs-modules/mailer';
 @Module({
   imports: [
     MailerModule.forRoot({
-      transport: 'smtps://user@domain.com:pass@smtp.domain.com',
-      defaults: {
-        from: '"nest-modules" <modules@nestjs.com>',
-      },
+      transport: {
+        host: 'smtp.gmail.com',
+        auth:{
+          user: 'sysprop123@gmail.com', // Tu dirección de correo electrónico
+          pass: 'wklgcjfcdranmlzp', // Tu contraseña de correo electrónico
+        }
+      }
+
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',

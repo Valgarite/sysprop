@@ -27,19 +27,11 @@ export class UsuariosController {
         const cargo = await this.usuariosService.getCargoById(newUsuario.cargo)
         return this.usuariosService.createUsuario(newUsuario, cargo);
     }
-    @Post('/recuperar')
-    sendEmail(@Body() body: { to: string }) {
-        const { to } = body;
-        const user = this.usuariosService.buscarPorCorreo(to);
-        if (user) {
-        const pass = "recuperar123";
-        const subject = 'Sistema de recuperación';
-        this.usuariosService.sendEmail(to, subject, '', pass);
-        } else {
-        // Manejar el caso en que no se encontró un usuario con el correo electrónico proporcionado
-        // Puedes lanzar un error, enviar una respuesta específica, o realizar otra acción según tus necesidades
-        throw new NotFoundException('Usuario no encontrado');
-    }}
+
+    @Post('/prueba')
+    enviarCorreo(@Body() busqueda: {"correo": string}){
+        return this.usuariosService.buscarPorCorreo(busqueda.correo)
+    }
 
     @Put(':id')
     update(@Param('id') id: string, @Body() updateUsuario: UpdateUsuarioDto) {
