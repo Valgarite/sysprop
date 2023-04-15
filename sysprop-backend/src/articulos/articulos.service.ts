@@ -20,6 +20,9 @@ export class ArticulosService {
 
         @InjectRepository(union_Compra_Articulos)
         private unionCompraRepository: Repository<union_Compra_Articulos>,
+
+        @InjectRepository(union_Venta_Articulos)
+        private unionVentaRepository: Repository<union_Venta_Articulos>
         ) {}
       
         async getAllArticulos(): Promise<Articulo[]> {
@@ -56,6 +59,7 @@ export class ArticulosService {
             },
           })
           return articuloEncontrado
+        
         }
 
         // async buscarArticulo(dto: CreateArticuloDto): Promise<Articulo>{
@@ -82,18 +86,22 @@ export class ArticulosService {
         }
 
         //chatgpgod
-        async venderArticulo(mensaje: listaArticulosDto): Promise<{vendidos: string[], noVendidos: string[], noExistentes: string[]}>{
-          console.log (mensaje)
+        async venderArticulo(mensaje: listaArticulosDto): Promise<{
+          vendidos: string[], noVendidos: string[], noExistentes: string[], 
+          total: number, listaArticulos: Articulo[], cantidadVendidos: number[]}>{
+            
           let articulos: string[] = mensaje.articulos
           let cantidades: number[] = mensaje.cantidades
       
-          let listaArticulos: string[] = [];
+          let listaArticulosNombre: string[] = [];
           let noVendidos: string[] = [];
           let noExistentes: string[] = [];
+          let listaArticulos: Articulo[]=[];
+          let cantidadVendidos: number[] = [];
+          let total = 0;
       
           for (let i = 0; i < articulos.length; i++) {
               let articulo = await this.getArticuloByNombre(articulos[i]);
-              console.log(articulo)
               if (!articulo) {
                   noExistentes.push(articulos[i]);
                   continue;
@@ -107,24 +115,20 @@ export class ArticulosService {
               //    throw new Error(`No hay suficiente inventario para ${articulo.nombre}. Cantidad disponible: ${articulo.cantidad}`);
               }
               if (valido) {
-                  listaArticulos.push(articulo.nombre);
-                  console.log(2)
-                  await this.restarArticulo(articulo, cantidades[i]);
-              }else{
-                  
-              }
-          }
-          console.log(3)
-          
-          const afectados = listaArticulos
-          for (let i = 0; i < afectados.length; i++){
-            afectados[i]
-          }
+                  listaArticulosNombre.push(articulo.nombre);
 
-          return { vendidos: listaArticulos, noVendidos, noExistentes};
+                  total += (articulo.precio * cantidades[i])
+                  await this.restarArticulo(articulo, cantidades[i]);
+                  articulo.cantidad = articulo.cantidad - cantidades[i]
+                  listaArticulos.push(articulo)
+                  cantidadVendidos.push(cantidades[i])
+              }
+          }          
+
+          return { vendidos: listaArticulosNombre, noVendidos, noExistentes, total, listaArticulos, cantidadVendidos};
       }
       
-
+      
       //   async venderArticulo(mensaje: listaArticulosDto): Promise<{vendidos: Articulo[], noVendidos: string[], noExistentes: string[]}>{
       //     console.log (mensaje)
       //     let articulos: string[] = mensaje.articulos

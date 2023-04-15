@@ -6,11 +6,14 @@ import { RelacionarVenta } from './dto/create-venta.dto/descontar.dto';
 import { union_Venta_Articulos } from 'src/entities/union_articulo_venta.entity';
 import { ApiTags } from '@nestjs/swagger';
 import { ventaCompletaDto } from './dto/todalaventa.dto';
+import { listaArticulosDto } from './dto/lista-articulos.dto';
+import { ArticulosService } from 'src/articulos/articulos.service';
 
 @ApiTags('Ventas')
 @Controller('ventas')
 export class VentasController {
-    constructor(private ventasService: VentasService){}
+    constructor(private ventasService: VentasService,
+        private articulosService: ArticulosService){}
 
     @Get()
     getVentas(){
@@ -47,9 +50,13 @@ export class VentasController {
     //    return this.ventasService.restarInventario(ventaCompleta);
     }
 
-    @Post('/prueba')
-    prueba(@Body() ventas: string[]){
-        return this.ventasService.getTotalAPartirDeNombre(ventas)
+    @Post('/registrar')
+    prueba(@Body() datos: CreateVentaDto, @Body() ventas: listaArticulosDto){
+        return this.ventasService.asociarArticulosAVenta(datos,ventas)
     }
 
+    // @Post('/pruebaart')
+    // prueba2(@Body() datos: CreateVentaDto, @Body() ventas: listaArticulosDto){
+    //     return this.articulosService.venderArticulo(ventas)
+    // }
 }

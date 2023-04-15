@@ -79,22 +79,54 @@ export class VentasService {
     return detallesVenta
   }
 
-  async getTotalAPartirDeNombre(ventas: string[]): Promise<Articulo[]>{
-    const listaArticulos: Articulo[] = []
-  for (let i = 0; i < ventas.length; i++){
-    listaArticulos.push(await this.articulosServices.getArticuloByNombre(ventas[i]))
+  // async getTotalAPartirDeNombre(ventas: listaArticulosDto): Promise<string[]>{
+  //     const articulos: string[] = ventas.articulos 
+  //     const listaArticulos: string[] = []
+  //   for (let i = 0; i < articulos.length; i++){
+  //     const busqueda = await this.articulosServices.getArticuloByNombre(articulos[i])
+  //     if(busqueda){
+  //       listaArticulos.push(busqueda.nombre)
+  //     }
+  //   }
+    
+  //   return listaArticulos
+  // }
+  async getTotalAPartirDeNombre(ventas: listaArticulosDto): Promise<string[]>{
+    const articulos: string[] = ventas.articulos 
+    const listaArticulos: string[] = []
+  for (let i = 0; i < articulos.length; i++){
+    const busqueda = await this.articulosServices.getArticuloByNombre(articulos[i])
+    if(busqueda){
+      listaArticulos.push(busqueda.nombre)
+    }
   }
+  
   return listaArticulos
-
-  }
+}
 
   //Asocia una lista de artículos a una sola venta
-  async asociarArticulosAVenta(datosVenta: CreateVentaDto,lista: listaArticulosDto){
-    const resultadoIntentoDeVenta = await this.articulosServices.venderArticulo(lista)
-    //pasar esto a un bucle const total = this.articulosServices.getArticuloByNombre(resultadoIntentoDeVenta.vendidos)
+  async asociarArticulosAVenta(crearVenta: CreateVentaDto, venderArts: listaArticulosDto){
+    const venta = new Venta()
+    let unionVenta 
+    console.log(crearVenta)
+    console.log(venderArts)
+    //Pasar datos de venta
+    venta.fechaCreacion = new Date(); venta.idusuario = crearVenta.idusuario; venta.idcliente = crearVenta.idcliente
     
-    //this.createVenta()
+    //Pasar datos tras actualizar inventario
+    const ventaRealizada = (await this.articulosServices.venderArticulo(venderArts))
+    venta.total=ventaRealizada.total
+    
+    //Pasar datos a tabla de union
+    for (let i = 0; i < ventaRealizada.vendidos.length; i++) {
+    unionVenta= new union_Venta_Articulos()
+    unionVenta.cantidad = ventaRealizada.cantidadVendidos[i]; unionVenta.articulo = ventaRealizada.listaArticulos[i].id
+    console.log(await this.ventasRepository.save(venta))
+    unionVenta.venta = venta.id
+    console.log(await this.unionRepository.save(unionVenta))
+    }
 
+    return {Respuesta: venta.id}
   }
  
 
@@ -120,4 +152,4 @@ export class VentasService {
   //   return await this.unionRepository.save(relacionInventarioConVenta)
   // }
   //###############################################################################################
-}
+  }
