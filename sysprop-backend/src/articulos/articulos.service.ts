@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Articulo } from 'src/entities/articulo.entity';
 import { Repository } from 'typeorm';
@@ -104,15 +104,13 @@ export class ArticulosService {
               let articulo = await this.getArticuloByNombre(articulos[i]);
               if (!articulo) {
                   noExistentes.push(articulos[i]);
-                  continue;
+                  throw new HttpException(`"${articulos[i]}" no fue encontrado en los registros`, 406);
               }
               let valido = true;
               if (articulo.cantidad < cantidades[i]) {
                   noVendidos.push(articulo.nombre);
                   valido = false;
-              }
-              if (cantidades[i] > articulo.cantidad) {
-              //    throw new Error(`No hay suficiente inventario para ${articulo.nombre}. Cantidad disponible: ${articulo.cantidad}`);
+                  throw new HttpException(`No hay suficiente "${articulo.nombre}" para cumplir con la venta. Cantidad restante en inventario: ${articulo.cantidad}.`, 406);
               }
               if (valido) {
                   listaArticulosNombre.push(articulo.nombre);

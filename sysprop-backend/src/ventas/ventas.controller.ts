@@ -20,10 +20,11 @@ export class VentasController {
         return this.ventasService.getAllVentas();
     }
 
-    @Get('/detalles/:id')
-    getDetalles(@Param('id', ParseIntPipe) id: number){
-        return this.ventasService.getDetalles(id);
-    }
+    //Descomentar después de commit
+    // @Get('/detalles/:id')
+    // getDetalles(@Param('id', ParseIntPipe) id: number){
+    //     return this.ventasService.getDetalles(id);
+    // }
 
     @Get(':id')
     getVenta(@Param('id', ParseIntPipe) id: number){
@@ -43,11 +44,6 @@ export class VentasController {
     @Delete(':id')
     delete(@Param('id', ParseIntPipe) id: number) {
         return this.ventasService.deleteVenta(id);
-    }
-
-    @Post('/union')
-    crearUnion(@Body() ventaCompleta: ventaCompletaDto){
-    //    return this.ventasService.restarInventario(ventaCompleta);
     }
 
     @Post('/registrar')

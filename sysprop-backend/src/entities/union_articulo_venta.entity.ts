@@ -12,9 +12,9 @@ export class union_Venta_Articulos {
     @Column()
     cantidad: number;
 
-    @ManyToOne(type => Articulo, articulo => articulo.id)
+    @ManyToOne(() => Articulo, articulo => articulo.id)
     articulo: number;
 
-    @ManyToOne(type => Venta, venta => venta.id)
+    @ManyToOne(() => Venta, venta => venta.id)
     venta: number;
 }

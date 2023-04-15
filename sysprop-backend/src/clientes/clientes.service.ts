@@ -34,6 +34,13 @@ export class ClientesService {
             },
           });
         }
+        async getClienteByCedula(cedula: string): Promise<Cliente> {
+          return await this.clientesRepository.findOne({
+            where: {
+              cedula,
+            },
+          });
+        }
       
         async updateCliente(id: number, updateCliente: UpdateClienteDto): Promise<Cliente> {
           const cliente = await this.getClienteById(id);

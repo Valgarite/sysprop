@@ -74,8 +74,9 @@ export class VentasService {
     await this.ventasRepository.delete(id);
   }
 
-  async getDetalles(id: number): Promise<union_Venta_Articulos> {
-    const detallesVenta = await this.unionRepository.findOne({where: {id}, relations: ['articuloid']})
+  async getDetalles(venta: number){
+    console.log(venta)
+    const detallesVenta = await this.unionRepository.findOne({where: {'venta': venta}, relations: ['articulo']})
     return detallesVenta
   }
 
@@ -119,11 +120,11 @@ export class VentasService {
     
     //Pasar datos a tabla de union
     for (let i = 0; i < ventaRealizada.vendidos.length; i++) {
-    unionVenta= new union_Venta_Articulos()
-    unionVenta.cantidad = ventaRealizada.cantidadVendidos[i]; unionVenta.articulo = ventaRealizada.listaArticulos[i].id
-    console.log(await this.ventasRepository.save(venta))
-    unionVenta.venta = venta.id
-    console.log(await this.unionRepository.save(unionVenta))
+      unionVenta= new union_Venta_Articulos()
+      unionVenta.cantidad = ventaRealizada.cantidadVendidos[i]; unionVenta.articulo = ventaRealizada.listaArticulos[i].id
+      console.log(await this.ventasRepository.save(venta))
+      unionVenta.venta = venta.id
+      console.log(await this.unionRepository.save(unionVenta))
     }
 
     return {Respuesta: venta.id}
