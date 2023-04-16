@@ -18,7 +18,7 @@ export class Proveedor {
         @Column({length: 120})
         direccion: string;
 
-        @Column({default: "NO", length: 50})
+        @Column({length: 50})
         correo: string;
 
         @Column({default: ()=> 'TRUE'})

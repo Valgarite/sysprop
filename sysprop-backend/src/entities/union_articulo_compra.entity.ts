@@ -1,10 +1,10 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Articulo } from "./articulo.entity";
 import { Compra } from "./compra.entity";
 
 //TABLA DE UNIÓN
 @Entity()
-export class union_Compra_Articulos extends BaseEntity{
+export class union_Compra_Articulos{
     //EN CONDICIONES NORMALES ESTE ID NO HARÍA FALTA PERO TYPEORM NO PERMITE ENTITIES SIN PRIMARY COLUMN.
     @PrimaryGeneratedColumn()
     id: number;
@@ -19,8 +19,10 @@ export class union_Compra_Articulos extends BaseEntity{
     nombreregistrado: string;
 
     @ManyToOne(() => Articulo, articulo => articulo.id)
+    @JoinColumn()
     articulo: Articulo[];
 
     @ManyToOne(() => Compra, compra => compra.id)
+    @JoinColumn()
     compra: Compra[];
 }

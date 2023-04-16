@@ -9,5 +9,5 @@ export class UpdateUsuarioDto{
     password?: string
     fechaNacimiento?: Date
     correo?: string
-    cargo?: any
+    cargo?: string
 }

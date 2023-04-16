@@ -4,6 +4,7 @@ import { CreateCompraDto } from './dto/create-compra.dto';
 import { UpdateCompraDto } from './dto/update-compra.dto';
 import { RelacionarCompra } from './dto/incrementar.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { listaCompraDto } from 'src/articulos/dto/lista-compra.dto';
 
 @ApiTags('Compras')
 @Controller('compras')
@@ -13,6 +14,11 @@ export class ComprasController {
     @Get()
     getCompras(){
         return this.comprasService.getAllCompras();
+    }
+
+    @Get('/detalles/:id')
+    getDetalles(@Param('id', ParseIntPipe) id:number){
+        return this.comprasService.getDetalles(id); //falta terminar
     }
 
     @Get(':id')
@@ -33,6 +39,11 @@ export class ComprasController {
     @Delete(':id')
     delete(@Param('id', ParseIntPipe) id: number) {
         return this.comprasService.deleteCompra(id);
+    }
+
+    @Post('/registrar')
+    comprar(@Body() datos: CreateCompraDto, @Body() lista: listaCompraDto){
+        return this.comprasService.asociarArticulosACompra(datos, lista)
     }
 
     // @Post('/union')

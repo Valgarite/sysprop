@@ -226,8 +226,10 @@ export class VentasService {
       unionVenta.articulo = ventaRealizada.listaArticulos[i].id;
       unionVenta.preciounitario = ventaRealizada.preciosUsados[i];
       unionVenta.nombreregistrado = ventaRealizada.vendidos[i];
+
       console.log(await this.ventasRepository.save(venta))
       unionVenta.venta = venta.id
+      
       console.log(await this.unionRepository.save(unionVenta))
     }
 

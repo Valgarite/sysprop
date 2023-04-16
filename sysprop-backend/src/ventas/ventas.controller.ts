@@ -51,7 +51,7 @@ export class VentasController {
     }
 
     @Post('/registrar')
-    prueba(@Body() datos: CreateVentaDto, @Body() ventas: listaArticulosDto){
+    vender(@Body() datos: CreateVentaDto, @Body() ventas: listaArticulosDto){
         return this.ventasService.asociarArticulosAVenta(datos,ventas)
     }
 

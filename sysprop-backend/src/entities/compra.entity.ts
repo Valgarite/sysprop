@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from "./usuario.entity";
 import { union_Compra_Articulos } from "./union_articulo_compra.entity";
 import { Proveedor } from "./proveedor.entity";
@@ -15,11 +15,14 @@ export class Compra extends BaseEntity{
         total: number;
 
         @ManyToOne(type => Usuario, usuario => usuario.id)
-        idusuario: number; //FK
+        @JoinColumn()
+        idusuario: Usuario; //FK
 
         @ManyToOne(type => Proveedor, proveedor => proveedor.id)
-        idproveedor: number; //FK
+        @JoinColumn()
+        idproveedor: Proveedor; //FK
 
         @OneToMany(() => union_Compra_Articulos, union=>union.compra)
+        @JoinColumn()
         union: union_Compra_Articulos[];
 }

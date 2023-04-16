@@ -8,6 +8,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { CreateUsuarioDto } from 'src/usuarios/dto/crear-usuario.dto';
 import { Articulo } from 'src/entities/articulo.entity';
 import { listaArticulosDto } from './dto/lista-articulos.dto';
+import { listaCompraDto } from './dto/lista-compra.dto';
 
 @ApiTags('Articulos')
 @Controller('articulos')
@@ -31,16 +32,8 @@ export class ArticulosController {
     }
 
     @Post('/comprar')
-    async postArticulo(@Body() newArticulo: CreateArticuloDto){
-            const articuloEncontrado = await this.articulosService.getArticuloByNombre(newArticulo.nombre)
-            console.log(articuloEncontrado)
-            if (articuloEncontrado){
-                console.log(articuloEncontrado)
-                console.log(newArticulo)
-                return await this.articulosService.sumarArticulo(articuloEncontrado.id, articuloEncontrado.cantidad, newArticulo.cantidad)
-            } else {
-                return await this.articulosService.createArticulo(newArticulo)
-            }
+    async agregarArticulo(@Body() newArticulo: listaCompraDto){
+        return this.articulosService.comprarArticulo(newArticulo)
     }
 
     @Post('/vender')

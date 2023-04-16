@@ -130,8 +130,18 @@ export class UsuariosService {
   }
 
   async updateUsuario(id: string, updateUsuario: UpdateUsuarioDto): Promise<Usuario> {
+    const cargo = await this.getCargoByNombre(updateUsuario.cargo)
+    let nuevoUsuario: Usuario
+    nuevoUsuario.nombre = updateUsuario.nombre
+    nuevoUsuario.username = updateUsuario.username
+    nuevoUsuario.password = updateUsuario.password
+    nuevoUsuario.fechaNacimiento = updateUsuario.fechaNacimiento
+    nuevoUsuario.cedula = updateUsuario.cedula
+    nuevoUsuario.cargo = cargo
+    nuevoUsuario.correo = updateUsuario.correo
+    
     const usuario = await this.getUsuarioById(id);
-    this.usuariosRepository.merge(usuario, updateUsuario);
+    this.usuariosRepository.merge(usuario, nuevoUsuario);
     return await this.usuariosRepository.save(usuario);
   }
 
