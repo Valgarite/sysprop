@@ -31,6 +31,11 @@ export class ArticulosController {
         return this.articulosService.getArticuloById(id);
     }
 
+    @Post()
+    nuevoArticulo(@Body() newArticulo: CreateArticuloDto){
+        return this.articulosService.createArticulo(newArticulo)
+    }
+
     @Post('/comprar')
     async agregarArticulo(@Body() newArticulo: listaCompraDto){
         return this.articulosService.comprarArticulo(newArticulo)
