@@ -8,4 +8,9 @@ export class loginUsuarioDto{
     @IsNotEmpty()
     @IsString()
     password: string
+
+    @IsNotEmpty()
+    @IsString()
+    intentos: number
+
 }

@@ -154,34 +154,32 @@ export class UsuariosService {
   }
 
   //en crearusuarios, añadir el revisar si el nombre de usuario está ocupado
-  async login(user: string, pass: string){
+  async login(user: string, pass: string, intentos: number){
     const busquedaUsuario = await this.getUsuarioByUsername(user)
 
     if(busquedaUsuario){
-      const busquedaContraseña: Usuario = await this.usuariosRepository.findOneBy({'password': pass})
-      
-      if(busquedaContraseña){
+      const busquedaContraseña: Usuario = await this.usuariosRepository.findOneBy({'password': pass, 'username': user})
+      if(intentos>0){
+        if(busquedaContraseña){
+          const respuesta = busquedaUsuario
 
-        const respuesta = busquedaUsuario
-
-        if(respuesta.estado_activo){
-          const user = {
-            username: respuesta.username,
-            nombre: respuesta.nombre,
-            cedula: respuesta.cedula,
-            correo: respuesta.correo,
-            estado_activo: respuesta.estado_activo,
-            //numIntentos: respuesta.num_intentos
-          }
-          return {
-            user,
-            statusCode: HttpStatus.OK
-          }
-        } else{throw new UnauthorizedException("Su usuario está bloqueado del sistema.")}
-      } else {throw new UnauthorizedException("Contraseña incorrecta.")}
+          if(respuesta.estado_activo){
+            const user = {
+              username: respuesta.username,
+              nombre: respuesta.nombre,
+              cedula: respuesta.cedula,
+              correo: respuesta.correo,
+              estado_activo: respuesta.estado_activo
+            }
+            return {
+              user,
+              statusCode: HttpStatus.OK
+            }
+          } else{throw new UnauthorizedException("Su usuario está bloqueado del sistema.")}
+        } else {throw new UnauthorizedException("Contraseña incorrecta.")}
+      } //VALIDAR INTENTOS EN ESTE ELSE: {throw new UnauthorizedException("")
     } else {throw new UnauthorizedException("Usuario incorrecto o inexistente.")}
   }
-
 
   async getAllCargos(): Promise<Cargo[]> {
     return await this.cargoRepository.find();

@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, NotFoundException } from '@nestjs/common';
 import { AppService } from './app.service';
 import { UsuariosService } from './usuarios/usuarios.service';
 import { Usuario } from './entities/usuario.entity';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Rutas peladas')
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService,
@@ -28,5 +30,4 @@ export class AppController {
           // Puedes lanzar un error, enviar una respuesta específica, o realizar otra acción según tus necesidades
           throw new NotFoundException('Correo no encontrado');
   }}
-
 }

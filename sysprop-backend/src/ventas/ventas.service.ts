@@ -14,6 +14,7 @@ import { ArticulosService } from 'src/articulos/articulos.service';
 import { listaArticulosDto } from 'src/articulos/dto/lista-articulos.dto';
 import { Categoria } from 'src/entities/categoria.entity';
 import { UsuariosService } from 'src/usuarios/usuarios.service';
+import { ClientesService } from 'src/clientes/clientes.service';
 
 @Injectable()
 export class VentasService {
@@ -36,7 +37,8 @@ export class VentasService {
     private categoriaRepository: Repository<Categoria>,
 
     private articulosServices: ArticulosService,
-    private usuariosServices: UsuariosService
+    private usuariosServices: UsuariosService,
+    private clientesServices: ClientesService,
   ) {}
 
   async getAllVentas(): Promise<Venta[]> {
@@ -67,7 +69,7 @@ export class VentasService {
 
   async getDetalles(idVenta: number){
     const cantidades: number[] = [];
-    const venta = await this.ventasRepository.findOne({ where: { id: idVenta }, relations: ['union']})
+    const venta = await this.ventasRepository.findOne({ where: { id: idVenta }, relations: ['union', 'idusuario', 'idcliente']})
     const ids = venta.union.map(union => union.id);
     let unionEnVenta: union_Venta_Articulos[]=[]
     let unionEnLista: union_Venta_Articulos
@@ -77,9 +79,7 @@ export class VentasService {
     for (let i=0; i<ids.length; i++){
       unionEnVenta = await this.unionRepository.find({where: {id: ids[i]}, relations:['articulo']})
       unionEnLista = unionEnVenta[0]
-      // nombrePush = unionEnLista.nombreregistrado
-      // cantidadPush = unionEnLista.cantidad
-      // precioPush = unionEnLista.preciounitario
+      
       nombresRegistro.push(unionEnLista.nombreregistrado)
       cantidadesRegistro.push(unionEnLista.cantidad)
       preciosUsados.push(unionEnLista.preciounitario)
@@ -90,8 +90,14 @@ export class VentasService {
       num2 = preciosUsados[j]
       total += (num1*num2)
     }
+    const fecha = venta.fechaCreacion
+    
+    const cliente = venta.idcliente, usuario = venta.idusuario;
+    
+    const nombreCliente = cliente.nombre; const cedulaCliente = cliente.cedula;
+    const nombreUsuario = usuario.nombre; const cedulaUsuario = usuario.cedula;
 
-    return {idVenta, nombresRegistro, cantidadesRegistro, preciosUsados, total}
+    return {idVenta, fecha, nombreCliente, cedulaCliente, nombreUsuario, cedulaUsuario , nombresRegistro, cantidadesRegistro, preciosUsados, total}
     }
     // Ejemplo de ChatGPT que apliqué en la línea anterior: const articulo = await this.articuloRepository.findOne({ where: { id: 3 } }); // Realiza la consulta filtrando por id = 3
 

@@ -13,11 +13,12 @@ import { Categoria } from 'src/entities/categoria.entity';
 import { union_Compra_Articulos } from 'src/entities/union_articulo_compra.entity';
 import { UsuariosService } from 'src/usuarios/usuarios.service';
 import { Cargo } from 'src/entities/cargo.entity';
+import { ClientesService } from 'src/clientes/clientes.service';
 
 @Module({
   imports: [ArticulosModule, TypeOrmModule.forFeature([Venta, Cliente, union_Venta_Articulos, Usuario, Articulo, Categoria, union_Compra_Articulos, Cargo])],
   controllers: [VentasController],
-  providers: [VentasService, ArticulosService, UsuariosService],
+  providers: [VentasService, ArticulosService, UsuariosService, ClientesService],
   exports: [VentasService]
 })
 export class VentasModule {}
