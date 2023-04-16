@@ -141,22 +141,19 @@ export class ArticulosService {
 
     for (let i = 0; i < articulos.length; i++) {
       let articulo: Articulo
-      const nuevoArticulo: CreateArticuloDto = {
+      const nuevoArticulo = {
         nombre: articulos[i],
         cantidad: cantidades[i],
-        precio: precios[i],
-        categoria: categorias[i]
       }
       console.log("registrando a: ", nuevoArticulo)
       let articuloEncontrado = await this.getArticuloByNombre(articulos[i]);
       if (articuloEncontrado) {
         articulo = await this.sumarArticulo(articuloEncontrado, nuevoArticulo.cantidad)
       } else {
-        articulo = await this.createArticulo(nuevoArticulo)
       }
-      total += (nuevoArticulo.precio * nuevoArticulo.cantidad)
+      total += (articuloEncontrado.precio * nuevoArticulo.cantidad)
       cantidadComprados.push(nuevoArticulo.cantidad)
-      preciosUsadosEnCompra.push(nuevoArticulo.precio)
+      preciosUsadosEnCompra.push(articuloEncontrado.precio)
       listaArticulos.push(articuloEncontrado)
 
     }
