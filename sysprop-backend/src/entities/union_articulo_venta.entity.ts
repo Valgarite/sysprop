@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Articulo } from "./articulo.entity";
 import { Venta } from "./venta.entity";
 
@@ -9,12 +9,20 @@ export class union_Venta_Articulos {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({width: 4})
     cantidad: number;
 
+    @Column({type: 'decimal', precision: 8, scale: 2})
+    preciounitario: number;
+
+    @Column({length: 80})
+    nombreregistrado: string;
+
     @ManyToOne(() => Articulo, articulo => articulo.id)
-    articulo: number;
+    @JoinColumn()
+    articulo: Articulo[];
 
     @ManyToOne(() => Venta, venta => venta.id)
-    venta: number;
+    @JoinColumn()
+    venta: Venta[];
 }

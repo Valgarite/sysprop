@@ -41,7 +41,7 @@ export class ClientesService {
             },
           });
         }
-      
+              
         async updateCliente(id: number, updateCliente: UpdateClienteDto): Promise<Cliente> {
           const cliente = await this.getClienteById(id);
           this.clientesRepository.merge(cliente, updateCliente);

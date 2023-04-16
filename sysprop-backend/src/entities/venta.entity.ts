@@ -11,18 +11,18 @@ export class Venta {
         @Column({type: 'datetime', default: () => 'CURRENT_TIMESTAMP'})
         fechaCreacion: Date;
 
-        @Column({type: 'decimal', precision: 8, scale:2})
+        @Column({type: 'decimal', precision: 10, scale:2})
         total: number;
 
         @ManyToOne(type => Usuario, usuario => usuario.id)
         @JoinColumn()
-        idusuario: number; //FK
+        idusuario: Usuario; //FK
 
         @ManyToOne(type => Cliente, cliente => cliente.id)
         @JoinColumn()
-        idcliente: number; //FK
+        idcliente: Cliente; //FK
 
         @OneToMany(type => union_Venta_Articulos, union=>union.venta)
         @JoinColumn()
-        union: number;
+        union: union_Venta_Articulos[];
 }

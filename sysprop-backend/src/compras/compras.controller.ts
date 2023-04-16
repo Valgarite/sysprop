@@ -35,8 +35,8 @@ export class ComprasController {
         return this.comprasService.deleteCompra(id);
     }
 
-    @Post('/union')
-    crearUnion(@Body() descontar: RelacionarCompra){
-    //    return this.comprasService.sumarInventario(descontar);
-    }
+    // @Post('/union')
+    // crearUnion(@Body() descontar: RelacionarCompra){
+    // //    return this.comprasService.sumarInventario(descontar);
+    // }
 }

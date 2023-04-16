@@ -85,7 +85,8 @@ export class ArticulosService {
         //chatgpgod
         async venderArticulo(mensaje: listaArticulosDto): Promise<{
           vendidos: string[], noVendidos: string[], noExistentes: string[], 
-          total: number, listaArticulos: Articulo[], cantidadVendidos: number[]}>{
+          total: number, listaArticulos: Articulo[],
+          cantidadVendidos: number[], preciosUsados: number[]}>{
             
           let articulos: string[] = mensaje.articulos
           let cantidades: number[] = mensaje.cantidades
@@ -95,6 +96,7 @@ export class ArticulosService {
           let noExistentes: string[] = [];
           let listaArticulos: Articulo[]=[];
           let cantidadVendidos: number[] = [];
+          let preciosUsados: number[] = [];
           let total = 0;
       
           for (let i = 0; i < articulos.length; i++) {
@@ -117,10 +119,11 @@ export class ArticulosService {
                   articulo.cantidad = articulo.cantidad - cantidades[i]
                   listaArticulos.push(articulo)
                   cantidadVendidos.push(cantidades[i])
+                  preciosUsados.push(articulo.precio)
               }
           }          
 
-          return { vendidos: listaArticulosNombre, noVendidos, noExistentes, total, listaArticulos, cantidadVendidos};
+          return { vendidos: listaArticulosNombre, noVendidos, noExistentes, total, listaArticulos, cantidadVendidos, preciosUsados};
       }
       
       

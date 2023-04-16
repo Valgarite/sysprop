@@ -9,12 +9,18 @@ export class union_Compra_Articulos extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({width: 4})
     cantidad: number;
 
-    @ManyToOne(type => Articulo, articulo => articulo.id)
-    articulo: Articulo;
+    @Column({type: 'decimal', precision: 8, scale: 2})
+    preciounitario: number;
+
+    @Column({length: 80})
+    nombreregistrado: string;
+
+    @ManyToOne(() => Articulo, articulo => articulo.id)
+    articulo: Articulo[];
 
     @ManyToOne(() => Compra, compra => compra.id)
-    compra: Compra;
+    compra: Compra[];
 }

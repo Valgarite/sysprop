@@ -15,7 +15,7 @@ export class Articulo extends BaseEntity{
     @Column({width: 4})
     cantidad: number;
 
-    @Column({type: 'decimal', precision: 8, scale: 2})
+    @Column({type: 'decimal', precision: 10, scale: 2})
     precio: number;
 
     @Column({length: 30})
