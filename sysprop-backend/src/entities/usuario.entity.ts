@@ -31,6 +31,6 @@ export class Usuario extends BaseEntity{
     @OneToMany(()=>Venta, venta=>venta.id)
     venta: Venta[]
 
-    @ManyToOne(()=>Cargo, cargo=>cargo.id, {cascade: true})
+    @ManyToOne(()=>Cargo, cargo=>cargo.id)
     cargo: Cargo;
 }
