@@ -33,6 +33,11 @@ export class UsuariosController {
         return this.usuariosService.updateUsuario(id, updateUsuario);
     }
 
+    @Delete ('/bloqueartemporalmente/:id')
+    bloquear(@Param('id') id: any) {
+        return this.usuariosService.bloquearUsuario(id);
+    }
+
     @Delete(':id')
     delete(@Param('id') id: any) {
         return this.usuariosService.desactivarUsuario(id);

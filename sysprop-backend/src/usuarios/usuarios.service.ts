@@ -182,9 +182,9 @@ export class UsuariosService {
             }
           } else{throw new UnauthorizedException("Su usuario está bloqueado del sistema.")}
         } else {throw new UnauthorizedException("Contraseña incorrecta.")}
-      } else {
-        void this.bloquearUsuario(user)
-        throw new UnauthorizedException("Sin intentos disponibles, ha sido bloqueado del sistema durante 5 segundos.")}
+      } else {void this.bloquearUsuario(user)
+        throw new UnauthorizedException("Sin intentos disponibles, ha sido bloqueado del sistema durante 5 segundos.")
+      }
     } else {throw new UnauthorizedException("Usuario incorrecto o inexistente.")}
   }
 
