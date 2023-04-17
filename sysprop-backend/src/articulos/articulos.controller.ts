@@ -65,7 +65,7 @@ export class ArticulosController {
 
     @Delete(':id')
     deleteArticulo(@Param('id', ParseIntPipe) id: number) {
-        return this.articulosService.desactivarArticulo(id);
+        return this.articulosService.deleteArticulo(id);
     }
 
 

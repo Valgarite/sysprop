@@ -20,6 +20,11 @@ export class VentasController {
         return this.ventasService.getAllVentas();
     }
 
+    @Get('/total')
+    getTotalHoy(){
+        return this.ventasService.getVentasDiarias();
+    }
+
     @Get('/lista')
     getListaVentas(){
         return this.ventasService.getListaVentas();//falta terminar

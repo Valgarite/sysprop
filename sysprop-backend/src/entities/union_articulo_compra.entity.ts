@@ -18,7 +18,7 @@ export class union_Compra_Articulos{
     @Column({length: 80})
     nombreregistrado: string;
 
-    @ManyToOne(() => Articulo, articulo => articulo.id)
+    @ManyToOne(() => Articulo, articulo => articulo.id, {onDelete: 'SET NULL'})
     @JoinColumn()
     articulo: Articulo[];
 

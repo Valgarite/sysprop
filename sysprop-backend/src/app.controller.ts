@@ -15,13 +15,6 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get()
-  getResumen(){
-    const resumen = {
-      
-    }
-  }
-
   @Post('/recuperar')
   async sendEmail(@Body() body: { to: string }) {
       var randomstring = require("randomstring");

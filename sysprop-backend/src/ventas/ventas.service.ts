@@ -63,7 +63,6 @@ export class VentasService {
       //const usuarioData = this.usuariosServices.getUsuarioById()
       //usuarioNombre = usuarioData
     });
-
     return
   }
 
@@ -99,6 +98,25 @@ export class VentasService {
 
     return {idVenta, fecha, nombreCliente, cedulaCliente, nombreUsuario, cedulaUsuario , nombresRegistro, cantidadesRegistro, preciosUsados, total}
     }
+
+    async getVentasDiarias(): Promise<number> {
+      const fechaActual = new Date();
+      const fechaInicio = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate());
+      const fechaFin = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() + 1);
+      const ventas = await this.ventasRepository.createQueryBuilder('venta')
+        .where('venta.fechaCreacion >= :fechaInicio', { fechaInicio })
+        .andWhere('venta.fechaCreacion < :fechaFin', { fechaFin })
+        .getMany();
+        let suma =0
+        ventas.forEach(element => {
+          suma += parseFloat(element.total.toString());
+        });
+        
+      
+      return suma;
+    }
+    
+
     // Ejemplo de ChatGPT que apliqué en la línea anterior: const articulo = await this.articuloRepository.findOne({ where: { id: 3 } }); // Realiza la consulta filtrando por id = 3
 
     // // // console.log(idVenta)
