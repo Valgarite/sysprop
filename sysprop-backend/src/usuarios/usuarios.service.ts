@@ -22,9 +22,9 @@ export class UsuariosService {
 
   async buscarPorCorreo(entrada):Promise<Usuario>{
     console.log(entrada)
-    const correo = entrada
+    const correo: string = entrada.to
     const correoEncontrado = await this.usuariosRepository.findOne({
-      where: {correo: correo},
+      where: {correo},
     })
     if(correoEncontrado){
       return correoEncontrado
@@ -33,14 +33,11 @@ export class UsuariosService {
   }
 
   async buscarUsuarioPorCorreo(entrada):Promise<Usuario>{
-    console.log(entrada)
     const correo = entrada
     const correoEncontrado = await this.usuariosRepository.findOne({
-      select:{correo: true},
+      select:{id: true, correo: true},
       where: {correo: correo},
     })
-    console.log(correoEncontrado)
-
     if(correoEncontrado){
       return correoEncontrado
     }
@@ -50,6 +47,7 @@ export class UsuariosService {
     to: string,
     subject: string,
     variable: any,
+    usuarioId: string
   ): Promise<void> {
     // Crea un objeto de transporte de correo
     const transporter = nodemailer.createTransport({
@@ -79,8 +77,7 @@ export class UsuariosService {
     const cambio = {
       "password": variable
     }
-    const usuarioCambio = await this.buscarUsuarioPorCorreo(to)
-    await this.updateUsuario(usuarioCambio.id, cambio)
+    await this.updateUsuario(usuarioId, cambio)
   }
   
 
@@ -119,13 +116,14 @@ export class UsuariosService {
   }
 
   async getUsuarioById(id: string): Promise<Usuario> {
-    const respuesta = this.usuariosRepository.findOne({
+    console.log(id)
+    const respuesta = await this.usuariosRepository.findOne({
       where: {
         id,
       },
       relations: ["cargo"] 
     });
-
+    console.log("RESPUESTA EN GETUSUARIOBYID: \n", respuesta)
     return await respuesta
   }
 
@@ -135,7 +133,7 @@ export class UsuariosService {
     const usuario = await this.getUsuarioById(id);
     const usuarioActualizado = this.usuariosRepository.merge(usuario, updateUsuario);
     usuarioActualizado.cargo = cargo;
-    
+    console.log(usuarioActualizado)
     return await this.usuariosRepository.save(usuarioActualizado);
   }
   

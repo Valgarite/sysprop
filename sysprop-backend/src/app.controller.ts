@@ -15,16 +15,22 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Post('/prueba')
+  prueba(@Body() to: string )
+  {
+    return this.usuariosService.buscarUsuarioPorCorreo(to);
+  }
+
   @Post('/recuperar')
   async sendEmail(@Body() body: { to: string }) {
       var randomstring = require("randomstring");
       const contraRandom = randomstring.generate({length: 8, readable: true, charset: 'hex', capitalization: 'uppercase'});
       const recipiente = body.to
-      const user = await this.usuariosService.buscarPorCorreo(recipiente);
+      const user = await this.usuariosService.buscarUsuarioPorCorreo(recipiente);
       
       if (user) {
           const subject = 'Sistema de recuperación';
-          this.usuariosService.sendEmail(body.to, subject, contraRandom);
+          this.usuariosService.sendEmail(body.to, subject, contraRandom, user.id);
       } else {
           // Manejar el caso en que no se encontró un usuario con el correo electrónico proporcionado
           // Puedes lanzar un error, enviar una respuesta específica, o realizar otra acción según tus necesidades
