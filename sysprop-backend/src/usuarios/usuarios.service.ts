@@ -79,9 +79,8 @@ export class UsuariosService {
     const cambio = {
       "password": variable
     }
-    const usuarioViejo = await this.buscarUsuarioPorCorreo(to)
-    const usuarioNuevo = this.usuariosRepository.merge(usuarioViejo, cambio);
-    const resultado = await this.usuariosRepository.save(usuarioNuevo);
+    const usuarioCambio = await this.buscarUsuarioPorCorreo(to)
+    await this.updateUsuario(usuarioCambio.id, cambio)
   }
   
 
