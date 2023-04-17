@@ -11,6 +11,7 @@ import { ProveedoresModule } from './proveedor/proveedor.module';
 import { DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER } from './config';
 import { bootStrapService } from './on-bootstrap.service';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { BackupModule } from './backup/backup.module';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
         host: 'smtp.gmail.com',
         auth:{
           user: 'sysprop123@gmail.com', // Tu dirección de correo electrónico
-          pass: 'wklgcjfcdranmlzp', // Tu contraseña de correo electrónico
+          pass: 'moifouskfrlkgpvw', // Tu contraseña de correo electrónico
         }
       }
 
@@ -42,7 +43,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
     ClientesModule,
     ComprasModule,
     ProveedoresModule,
-    
+    BackupModule
   ],
   controllers: [AppController],
   providers: [AppService, bootStrapService],

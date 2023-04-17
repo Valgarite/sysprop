@@ -16,11 +16,11 @@ export class AppController {
   }
 
   @Post('/recuperar')
-  sendEmail(@Body() body: { to: string }) {
+  async sendEmail(@Body() body: { to: string }) {
       var randomstring = require("randomstring");
       const contraRandom = randomstring.generate({length: 8, readable: true, charset: 'hex', capitalization: 'uppercase'});
       const recipiente = body.to
-      const user = this.usuariosService.buscarPorCorreo(recipiente);
+      const user = await this.usuariosService.buscarPorCorreo(recipiente);
       
       if (user) {
           const subject = 'Sistema de recuperación';

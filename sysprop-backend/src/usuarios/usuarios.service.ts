@@ -29,6 +29,7 @@ export class UsuariosService {
     if(correoEncontrado){
       return correoEncontrado
     }
+    else return null
   }
 
   async buscarUsuarioPorCorreo(entrada):Promise<Usuario>{
@@ -57,7 +58,7 @@ export class UsuariosService {
       port: 465,
       auth: {
         user: 'sysprop123@gmail.com', // Tu dirección de correo electrónico
-        pass: 'wklgcjfcdranmlzp', // Tu contraseña de correo electrónico
+        pass: 'moifouskfrlkgpvw', // Tu contraseña de correo electrónico
       },
     });
       console.log("enviado a ", to) 
