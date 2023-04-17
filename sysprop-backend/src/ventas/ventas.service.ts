@@ -99,7 +99,7 @@ export class VentasService {
     return {idVenta, fecha, nombreCliente, cedulaCliente, nombreUsuario, cedulaUsuario , nombresRegistro, cantidadesRegistro, preciosUsados, total}
     }
 
-    async getVentasDiarias(): Promise<number> {
+    async getVentasDiarias(): Promise<{suma, contador}> {
       const fechaActual = new Date();
       const fechaInicio = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate());
       const fechaFin = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate() + 1);
@@ -108,12 +108,14 @@ export class VentasService {
         .andWhere('venta.fechaCreacion < :fechaFin', { fechaFin })
         .getMany();
         let suma =0
+        let contador = 0
         ventas.forEach(element => {
+          contador += 1
           suma += parseFloat(element.total.toString());
         });
         
       
-      return suma;
+      return {suma, contador};
     }
     
 

@@ -21,6 +21,11 @@ export class ArticulosController {
         return this.articulosService.getAllArticulos();
     }
 
+    @Get('/resumen')
+    getResumen(){
+        return this.articulosService.getResumenHoy()
+    }
+
     @Get('/categorias')
     getCategorias(){
         return this.articulosService.getAllCategorias();

@@ -20,7 +20,7 @@ export class VentasController {
         return this.ventasService.getAllVentas();
     }
 
-    @Get('/total')
+    @Get('/resumen')
     getTotalHoy(){
         return this.ventasService.getVentasDiarias();
     }

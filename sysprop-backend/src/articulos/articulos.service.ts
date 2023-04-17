@@ -36,6 +36,18 @@ export class ArticulosService {
     return articulo;
   }
 
+  async getResumenHoy(): Promise<{suma: number, contador: number}>{
+     const articulos = await this.articulosRepository.createQueryBuilder('venta')
+        .getMany();
+        let suma =0
+        let contador = 0
+        articulos.forEach(element => {
+          contador += 1
+          suma += parseFloat(element.cantidad.toString());
+        });
+    return {suma, contador}
+  }
+
   async getArticuloById(id: number): Promise<Articulo> {
     return await this.articulosRepository.findOne({
       where: {

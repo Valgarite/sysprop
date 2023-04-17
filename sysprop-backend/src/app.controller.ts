@@ -4,7 +4,7 @@ import { UsuariosService } from './usuarios/usuarios.service';
 import { Usuario } from './entities/usuario.entity';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags('Rutas peladas')
+@ApiTags('Rutas')
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService,
@@ -13,12 +13,6 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
-  }
-
-  @Post('/prueba')
-  prueba(@Body() to: string )
-  {
-    return this.usuariosService.buscarUsuarioPorCorreo(to);
   }
 
   @Post('/recuperar')

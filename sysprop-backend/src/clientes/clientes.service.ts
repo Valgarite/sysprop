@@ -15,6 +15,16 @@ export class ClientesService {
         async getAllClientes(): Promise<Cliente[]> {
           return await this.clientesRepository.find();
         }
+
+        async getResumenHoy(): Promise<{contador: number}>{
+            const clientes = await this.clientesRepository.find()
+            let suma = 0
+            let contador = 0
+            clientes.forEach(element => {
+              contador += 1
+            });
+          return {contador}
+        }
       
         async createCliente(nuevoCliente: CreateClienteDto): Promise<Cliente> {         
             const cliente = new Cliente()

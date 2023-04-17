@@ -14,6 +14,11 @@ export class ClientesController {
         return this.clientesService.getAllClientes();
     }
 
+    @Get('/resumen')
+    getResumen(){
+        return this.clientesService.getResumenHoy()
+    }
+
     @Get(':id')
     getCliente(@Param('id', ParseIntPipe) id: number){
         return this.clientesService.getClienteById(id);
