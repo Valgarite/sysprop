@@ -35,7 +35,8 @@ import { BackupModule } from './backup/backup.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       autoLoadEntities: true,
       synchronize: true,
-      timezone: "+04:00"
+      timezone: "+04:00",
+      dropSchema: true
     }),
     UsuariosModule,
     ArticulosModule,
