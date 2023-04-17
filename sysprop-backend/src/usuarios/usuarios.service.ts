@@ -161,7 +161,7 @@ export class UsuariosService {
   //en crearusuarios, añadir el revisar si el nombre de usuario está ocupado
   async login(user: string, pass: string, intentos: number){
     const busquedaUsuario = await this.getUsuarioByUsername(user)
-
+    
     if(busquedaUsuario){
       const busquedaContraseña: Usuario = await this.usuariosRepository.findOneBy({'password': pass, 'username': user})
       if(intentos>0){
@@ -182,8 +182,21 @@ export class UsuariosService {
             }
           } else{throw new UnauthorizedException("Su usuario está bloqueado del sistema.")}
         } else {throw new UnauthorizedException("Contraseña incorrecta.")}
-      } //VALIDAR INTENTOS EN ESTE ELSE: {throw new UnauthorizedException("")
+      } else {
+        void this.bloquearUsuario(user)
+        throw new UnauthorizedException("Sin intentos disponibles, ha sido bloqueado del sistema durante 5 segundos.")}
     } else {throw new UnauthorizedException("Usuario incorrecto o inexistente.")}
+  }
+
+  async bloquearUsuario(user: string){
+    const usuario = await this.getUsuarioByUsername(user)
+    if (usuario.estado_activo){
+      await this.desactivarUsuario(usuario.id)
+      await new Promise(resolve => setTimeout(resolve,3600000))
+      if((!(await this.getUsuarioByUsername(user)).estado_activo)){
+        await this.desactivarUsuario(usuario.id)
+      }
+    }
   }
 
   async getAllCargos(): Promise<Cargo[]> {
