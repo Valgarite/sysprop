@@ -257,12 +257,12 @@ export class UsuariosService {
 
   async spawnGerente(): Promise<void>{
     let datosGerente: CreateUsuarioDto={
-      "cedula": "000000",
-      "username": "admin",
-      "password": "zeus",
-      "nombre": "sysprop",
+      "cedula": "0000000",
+      "username": "sysprop",
+      "password": "syspropgerente",
+      "nombre": "Gelato Efrutta",
       "cargo": 3,
-      "correo": "carlsgutierrez259@gmail.com",
+      "correo": "sysprop123@gmail.com",
       "fechaNacimiento": new Date(Date.parse("2002-12-26"))
     }
 
