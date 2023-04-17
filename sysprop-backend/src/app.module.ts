@@ -36,7 +36,7 @@ import { BackupModule } from './backup/backup.module';
       autoLoadEntities: true,
       synchronize: true,
       timezone: "+04:00",
-      dropSchema: true
+      //dropSchema: true
     }),
     UsuariosModule,
     ArticulosModule,
