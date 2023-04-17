@@ -128,6 +128,9 @@ export class ArticulosService {
         articulo.cantidad = articulo.cantidad - cantidades[i]
         listaArticulos.push(articulo)
         cantidadVendidos.push(cantidades[i])
+        if(cantidades[i]==0){
+          throw new HttpException(`Intentó ingresar 0 unidades de artículo para la venta.`, 406)
+        }
         preciosUsados.push(articulo.precio)
       }
     }
@@ -166,6 +169,9 @@ export class ArticulosService {
       total += (articuloEncontrado.precio * nuevoArticulo.cantidad)
       cantidadComprados.push(nuevoArticulo.cantidad)
       preciosUsadosEnCompra.push(articuloEncontrado.precio)
+      if (nuevoArticulo.cantidad == 0){
+        throw new HttpException(`Intentó agregar 0 unidades de${nuevoArticulo.nombre}`, 406)
+      }
       listaArticulos.push(articuloEncontrado)
 
     }

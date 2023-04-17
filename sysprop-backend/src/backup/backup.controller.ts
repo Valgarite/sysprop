@@ -13,7 +13,7 @@ export class BackupController {
       
     ){}
 
-    @Get('export')
+    @Get('/export')
     async export(@Res() res: Response): Promise<any> {
       const currentDate = moment().format('DD-MM-YYYY')
       const fileName = currentDate + '.sql'
